@@ -4,20 +4,37 @@
           !*** ./$$_lazy_route_resource lazy namespace object ***!
           \******************************************************/
         /*! no static exports found */
-        /***/ (function (module, exports) {
-            function webpackEmptyAsyncContext(req) {
-                // Here Promise.resolve().then() is used instead of new Promise() to prevent
-                // uncaught exception popping up in devtools
-                return Promise.resolve().then(function () {
-                    var e = new Error("Cannot find module '" + req + "'");
-                    e.code = 'MODULE_NOT_FOUND';
-                    throw e;
+        /***/ (function (module, exports, __webpack_require__) {
+            var map = {
+                "./articleModule/article.module": [
+                    "./src/app/articleModule/article.module.ts",
+                    "common",
+                    "articleModule-article-module"
+                ],
+                "./userModule/user.module": [
+                    "./src/app/userModule/user.module.ts",
+                    "common",
+                    "userModule-user-module"
+                ]
+            };
+            function webpackAsyncContext(req) {
+                if (!__webpack_require__.o(map, req)) {
+                    return Promise.resolve().then(function () {
+                        var e = new Error("Cannot find module '" + req + "'");
+                        e.code = 'MODULE_NOT_FOUND';
+                        throw e;
+                    });
+                }
+                var ids = map[req], id = ids[0];
+                return Promise.all(ids.slice(1).map(__webpack_require__.e)).then(function () {
+                    return __webpack_require__(id);
                 });
             }
-            webpackEmptyAsyncContext.keys = function () { return []; };
-            webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
-            module.exports = webpackEmptyAsyncContext;
-            webpackEmptyAsyncContext.id = "./$$_lazy_route_resource lazy recursive";
+            webpackAsyncContext.keys = function webpackAsyncContextKeys() {
+                return Object.keys(map);
+            };
+            webpackAsyncContext.id = "./$$_lazy_route_resource lazy recursive";
+            module.exports = webpackAsyncContext;
             /***/ 
         }),
         /***/ "./node_modules/raw-loader/dist/cjs.js!./src/app/app.component.html": 
@@ -28,106 +45,106 @@
         /***/ (function (module, __webpack_exports__, __webpack_require__) {
             "use strict";
             __webpack_require__.r(__webpack_exports__);
-            /* harmony default export */ __webpack_exports__["default"] = ("<!-- Start header -->\n<nav class=\"navbar navbar-light\">\n  <div class=\"container\">\n    <a class=\"navbar-brand\" href=\"index.html\">conduit</a>\n    <ul class=\"nav navbar-nav pull-xs-right\">\n      <li class=\"nav-item\">\n        <!-- Add \"active\" class when you're on that page\" -->\n        <a class=\"nav-link\" routerLink=\"\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">Home</a>\n      </li>\n      <li class=\"nav-item\" *ngIf=\"authService.isLogin;\">\n        <a class=\"nav-link\" routerLink=\"/new/editor\" routerLinkActive=\"active\" >\n          <i class=\"ion-compose\"></i>&nbsp;New Post\n        </a>\n      </li>\n      <li class=\"nav-item\" *ngIf=\"authService.isLogin;\">\n        <a class=\"nav-link\" routerLink=\"setting\" routerLinkActive=\"active\">\n          <i class=\"ion-gear-a\"></i>&nbsp;Settings\n        </a>\n      </li>\n      <li class=\"nav-item\" *ngIf=\"!authService.isLogin;\">\n        <a class=\"nav-link\" routerLink=\"login\" routerLinkActive=\"active\">Sign in</a>\n      </li>\n      <li class=\"nav-item\" *ngIf=\"!authService.isLogin;\">\n        <a class=\"nav-link\" routerLink=\"register\" routerLinkActive=\"active\">Sign up</a>\n      </li>\n      <li class=\"nav-item\" *ngIf=\"authService.isLogin;\">\n        <a class=\"nav-link\" [routerLink]=\"authService.name\" routerLinkActive=\"active\">{{authService.name}}</a>\n      </li>\n      <li class=\"nav-item\" *ngIf=\"authService.isLogin;\">\n        <a class=\"nav-link\" routerLink=\"register\" routerLinkActive=\"active\" (click)=\"logout()\">Logout</a>\n      </li>\n    </ul>\n  </div>\n</nav>\n<!-- End header -->\n\n<!-- Start content -->\n<router-outlet></router-outlet>\n<!-- End content -->\n\n<!-- Start footer -->\n<footer>\n  <div class=\"container\">\n    <a href=\"/\" class=\"logo-font\">conduit</a>\n    <span class=\"attribution\">\n      An interactive learning project from <a href=\"https://thinkster.io\">Thinkster</a>. Code &amp; design licensed\n      under MIT.\n    </span>\n  </div>\n</footer>\n<!-- End footer -->");
+            /* harmony default export */ __webpack_exports__["default"] = ("<app-header></app-header>\n<router-outlet></router-outlet>\n<app-footer></app-footer>");
             /***/ 
         }),
-        /***/ "./node_modules/raw-loader/dist/cjs.js!./src/app/article-detail/article-detail.component.html": 
-        /*!****************************************************************************************************!*\
-          !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/article-detail/article-detail.component.html ***!
-          \****************************************************************************************************/
+        /***/ "./node_modules/raw-loader/dist/cjs.js!./src/app/authModule/login/login.component.html": 
+        /*!*********************************************************************************************!*\
+          !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/authModule/login/login.component.html ***!
+          \*********************************************************************************************/
         /*! exports provided: default */
         /***/ (function (module, __webpack_exports__, __webpack_require__) {
             "use strict";
             __webpack_require__.r(__webpack_exports__);
-            /* harmony default export */ __webpack_exports__["default"] = ("<div class=\"article-page\">\n    <div class=\"banner\">\n        <div class=\"container\">\n            <h1>{{article?.title}}</h1>\n            <div class=\"article-meta\">\n                <a><img [src]=\"article?.author.image\" /></a>\n                <div class=\"info\">\n                    <a *ngIf=\"article?.author.username\" [routerLink]=\"['/',article?.author.username]\"\n                        class=\"author\">{{article?.author.username}}</a>\n                    <span class=\"date\">{{article?.createdAt | date:'fullDate'}}</span>\n                </div>\n\n                <button class=\"btn btn-sm btn-outline-secondary\" *ngIf=\"!check\"\n                    (click)=\"clickFollowUser(article?.author.username,article?.author.following)\">\n                    <span *ngIf=\"!article?.author.following\"><i class=\"ion-plus-round\"></i></span>\n                    &nbsp;\n                    {{article?.author.following ? 'Unfollow' : 'Follow  '}} {{article?.author.username}}\n                </button>\n                &nbsp;&nbsp;\n                <button class=\"btn btn-sm\" *ngIf=\"!check\"\n                    [ngClass]=\"article?.favorited ? 'btn-primary' : 'btn-outline-primary'\"\n                    (click)=\"toggleFavorite(slug,article?.favorited)\">\n                    <i class=\"ion-heart\"></i>\n                    &nbsp;\n                    Favorite Post <span class=\"counter\">({{article?.favoritesCount}})</span>\n                </button>\n\n                <button class=\"btn btn-sm btn-outline-secondary\" *ngIf=\"check\"\n                    [routerLink]=\"['/editor/',article?.slug]\">\n                    <i class=\"ion-edit\"></i>\n                    &nbsp;\n                    Edit Article\n                </button>\n                &nbsp;&nbsp;\n                <button class=\"btn btn-sm btn-outline-danger\" *ngIf=\"check\" (click)=\"deleteArticle()\">\n                    <i class=\"ion-trash-a\"></i>\n                    &nbsp;\n                    Delete Article\n                </button>\n\n            </div>\n        </div>\n    </div>\n    <div class=\"container page\">\n        <div class=\"row article-content\">\n            <div class=\"col-md-12\">\n                <p>\n                    {{article?.body}}\n                </p>\n                <ul class=\"tag-list\">\n                    <li class=\"tag-default text-dark tag-pill tag-outline ng-binding ng-scope\" *ngFor=\"let item of article?.tagList\">{{item}}</li>\n                </ul>\n            </div>\n        </div>\n        <hr />\n        <div class=\"article-actions\">\n            <div class=\"article-meta\">\n                <a href=\"profile.html\"><img [src]=\"article?.author.image ? article?.author.image : img\" /></a>\n                <div class=\"info\">\n                    <a class=\"author\" *ngIf=\"article?.author.username\"\n                        [routerLink]=\"['/',article?.author.username]\">{{article?.author.username}}</a>\n                    <span class=\"date\">{{article?.createdAt | date:'fullDate'}}</span>\n                </div>\n\n                <button class=\"btn btn-sm btn-outline-secondary\" *ngIf=\"!check\"\n                    (click)=\"clickFollowUser(article?.author.username,article?.author.following)\">\n                    <span *ngIf=\"!article?.author.following\"><i class=\"ion-plus-round\"></i></span>\n                    &nbsp;\n                    {{article?.author.following ? 'Unfollow' : 'Follow  '}} {{article?.author.username}}\n                </button>\n                &nbsp;\n                <button class=\"btn btn-sm\" *ngIf=\"!check\"\n                    [ngClass]=\"article?.favorited ? 'btn-primary' : 'btn-outline-primary'\"\n                    (click)=\"toggleFavorite(slug,article?.favorited)\">\n                    <i class=\"ion-heart\"></i>\n                    &nbsp;\n                    Favorite Post <span class=\"counter\">({{article?.favoritesCount}})</span>\n                </button>\n                <button class=\"btn btn-sm btn-outline-secondary\" *ngIf=\"check\"\n                    [routerLink]=\"['/editor/',article?.slug]\">\n                    <i class=\"ion-edit\"></i>\n                    &nbsp;\n                    Edit Article\n                </button>\n                &nbsp;&nbsp;\n                <button class=\"btn btn-sm btn-outline-danger\" *ngIf=\"check\" (click)=\"deleteArticle()\">\n                    <i class=\"ion-trash-a\"></i>\n                    &nbsp;\n                    Delete Article\n                </button>\n            </div>\n        </div>\n        <div class=\"row\">\n            <div class=\"col-xs-12 col-md-8 offset-md-2\">\n                <p *ngIf=\"!isLogin\"><a class=\"text-success\" [routerLink]=\"['/login']\">Sign in</a> or <a\n                        class=\"text-success\" [routerLink]=\"['/register']\">Sign up</a> to add comments on this article.\n                </p>\n                <form class=\"card comment-form\" *ngIf=\"isLogin\">\n                    <div class=\"card-block\">\n                        <textarea class=\"form-control\" placeholder=\"Write a comment...\" rows=\"3\"\n                            (keyup)=\"textBody = $event.target.value\" [value]=\"textBody\"></textarea>\n                    </div>\n                    <div class=\"card-footer\">\n                        <img [src]=\"img? img : imgNull\" class=\"comment-author-img\" />\n                        <button class=\"btn btn-sm btn-primary\" (click)=\"postNewComment()\">\n                            Post Comment\n                        </button>\n                    </div>\n                </form>\n                <div class=\"card\" *ngFor=\"let comment of listComment; let j = index\">\n                    <div class=\"card-block\">\n                        <p class=\"card-text\">{{comment?.body}}</p>\n                    </div>\n                    <div class=\"card-footer\">\n                        <a href=\"\" class=\"comment-author\">\n                            <img [src]=\"comment?.author?.image\" class=\"comment-author-img\" />\n                        </a>\n                        &nbsp;\n                        <a [routerLink]=\"['/',comment?.author.username]\"\n                            class=\"comment-author\">{{comment?.author.username}}</a>\n                        <span class=\"mod-options\" *ngIf=\"nameUserIslogin == comment?.author.username\"\n                            (click)=\"deleteComment(comment?.id, j)\"><i class=\"ion-trash-a\"></i></span>\n                        <span class=\"date-posted\">{{comment?.createdAt | date:'fullDate'}}</span>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>");
+            /* harmony default export */ __webpack_exports__["default"] = ("<div class=\"auth-page\">\n    <div class=\"container page\">\n        <div class=\"row\">\n\n            <div class=\"col-md-6 offset-md-3 col-xs-12\">\n                <h1 class=\"text-xs-center\">Sign in</h1>\n                <p class=\"text-xs-center\">\n                    <a [routerLink]=\"['/register']\">Need an account?</a>\n                </p>\n                <ul class=\"error-messages\" *ngIf=\"errorResponse\">\n                    <li>{{ errorResponse }}</li>\n                </ul>\n                <form [formGroup]=\"userForm\" (ngSubmit)=\"login()\">\n                    <fieldset class=\"form-group\">\n                        <input class=\"form-control form-control-lg\" type=\"email\" placeholder=\"Email\"\n                            formControlName=\"email\">\n                    </fieldset>\n                    <ul class=\"error-messages\"\n                        *ngIf=\"userForm.controls.email?.errors?.required && userForm.controls.email?.touched\">\n                        <li>Email is required</li>\n                    </ul>\n                    <ul class=\"error-messages\"\n                        *ngIf=\"userForm.controls.email?.errors?.pattern && userForm.controls.email?.touched\">\n                        <li>Not type email</li>\n                    </ul>\n                    <fieldset class=\"form-group\">\n                        <input class=\"form-control form-control-lg\" type=\"password\" placeholder=\"Password\"\n                            formControlName=\"password\">\n                    </fieldset>\n                    <ul class=\"error-messages\"\n                        *ngIf=\"userForm.controls.password?.errors?.required && userForm.controls.password?.touched\">\n                        <li>Password is required</li>\n                    </ul>\n                    <button class=\"btn btn-lg btn-primary pull-xs-right\" [disabled]=\"userForm.invalid\">\n                        Sign in\n                    </button>\n                </form>\n            </div>\n\n        </div>\n    </div>\n</div>");
             /***/ 
         }),
-        /***/ "./node_modules/raw-loader/dist/cjs.js!./src/app/editor/editor.component.html": 
-        /*!************************************************************************************!*\
-          !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/editor/editor.component.html ***!
-          \************************************************************************************/
+        /***/ "./node_modules/raw-loader/dist/cjs.js!./src/app/authModule/register/register.component.html": 
+        /*!***************************************************************************************************!*\
+          !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/authModule/register/register.component.html ***!
+          \***************************************************************************************************/
         /*! exports provided: default */
         /***/ (function (module, __webpack_exports__, __webpack_require__) {
             "use strict";
             __webpack_require__.r(__webpack_exports__);
-            /* harmony default export */ __webpack_exports__["default"] = ("<div class=\"editor-page\">\n    <div class=\"container page\">\n        <div class=\"row\">\n\n            <div class=\"col-md-10 offset-md-1 col-xs-12\">\n                    <ul class=\"error-messages\" *ngIf=\"errNewArticle\">\n                            <li *ngFor=\"let item of errNewArticle\">{{item}}</li>\n                    </ul>\n                <form [formGroup]=\"formArticle\">\n                    <fieldset>\n                        <fieldset class=\"form-group\">\n                            <input type=\"text\" class=\"form-control form-control-lg\" placeholder=\"Article Title\"\n                                formControlName=\"title\">\n                        </fieldset>\n                        <fieldset class=\"form-group\">\n                            <input type=\"text\" class=\"form-control\" placeholder=\"What's this article about?\"\n                                formControlName=\"description\">\n                        </fieldset>\n                        <fieldset class=\"form-group\">\n                            <textarea class=\"form-control\" rows=\"8\" placeholder=\"Write your article (in markdown)\"\n                                formControlName=\"body\"></textarea>\n                        </fieldset>\n                        <fieldset class=\"form-group\">\n                            <input type=\"text\" class=\"form-control\" placeholder=\"Enter tags\"\n                                (keyup.enter)=\"pushTab($event)\">\n                            <div class=\"tag-list\">\n                                <span *ngFor=\"let item of tagList; let i = index\"><a class=\"tag-pill tag-default\"><span\n                                            (click)=\"removetab(i)\"><i\n                                                class=\"ion-close-round\"></i></span>{{item}}</a></span>\n                            </div>\n                        </fieldset>\n                        <button class=\"btn btn-lg pull-xs-right btn-primary\" type=\"button\"  (click)=\"postArticle()\">\n                            Publish Article\n                        </button>\n                    </fieldset>\n                </form>\n            </div>\n\n        </div>\n    </div>\n</div>\n<!-- [disabled]=\"!formArticle.valid\" -->");
+            /* harmony default export */ __webpack_exports__["default"] = ("<div class=\"auth-page\">\n    <div class=\"container page\">\n        <div class=\"row\">\n            <div class=\"col-md-6 offset-md-3 col-xs-12\">\n                <h1 class=\"text-xs-center\">Sign up</h1>\n                <p class=\"text-xs-center\">\n                    <a [routerLink]=\"['/login']\">Have an account?</a>\n                </p>\n                <ul class=\"error-messages\" *ngIf=\"errregister\">\n                    <li>{{errregister[0]}}</li>\n                </ul>\n                <form (ngSubmit)=\"singup()\" [formGroup]=\"formUser\">\n                    <fieldset class=\"form-group\">\n                        <input class=\"form-control form-control-lg\" type=\"text\" placeholder=\"Your Name\"\n                            formControlName=\"username\">\n                    </fieldset>\n                    <ul class=\"error-messages\"\n                        *ngIf=\"formUser.controls.username?.errors?.required && formUser.controls.username?.touched\">\n                        <li>username is required</li>\n                    </ul>\n                    <fieldset class=\"form-group\">\n                        <input class=\"form-control form-control-lg\" type=\"email\" placeholder=\"Email\"\n                            formControlName=\"email\">\n                    </fieldset>\n                    <ul class=\"error-messages\"\n                        *ngIf=\"formUser.controls.email?.errors?.required && formUser.controls.email?.touched\">\n                        <li>Email is required</li>\n                    </ul>\n                    <ul class=\"error-messages\"\n                        *ngIf=\"formUser.controls.email?.errors?.pattern && formUser.controls.email?.touched\">\n                        <li>Not type email</li>\n                    </ul>\n                    <fieldset class=\"form-group\">\n                        <input class=\"form-control form-control-lg\" type=\"password\" placeholder=\"Password\"\n                            formControlName=\"password\">\n                    </fieldset>\n                    <ul class=\"error-messages\"\n                        *ngIf=\"formUser.controls.password?.errors?.required && formUser.controls.password?.touched\">\n                        <li>Password is required</li>\n                    </ul>\n                    <ul class=\"error-messages\"\n                        *ngIf=\"formUser.controls.password?.errors?.minlength && formUser.controls.password?.touched\">\n                        <li>Password min lenght 7</li>\n                    </ul>\n                    <button class=\"btn btn-lg btn-primary pull-xs-right\" [disabled]=\"formUser.invalid\">\n                        Sign up\n                    </button>\n                </form>\n            </div>\n        </div>\n    </div>\n</div>");
             /***/ 
         }),
-        /***/ "./node_modules/raw-loader/dist/cjs.js!./src/app/home/home.component.html": 
-        /*!********************************************************************************!*\
-          !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/home/home.component.html ***!
-          \********************************************************************************/
+        /***/ "./node_modules/raw-loader/dist/cjs.js!./src/app/component/button/favorite-button/favorite-button.component.html": 
+        /*!***********************************************************************************************************************!*\
+          !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/component/button/favorite-button/favorite-button.component.html ***!
+          \***********************************************************************************************************************/
         /*! exports provided: default */
         /***/ (function (module, __webpack_exports__, __webpack_require__) {
             "use strict";
             __webpack_require__.r(__webpack_exports__);
-            /* harmony default export */ __webpack_exports__["default"] = ("<div class=\"home-page\">\n    <div class=\"banner\" *ngIf=\"!authService.isLogin\">\n        <div class=\"container\">\n            <h1 class=\"logo-font\">conduit</h1>\n            <p>A place to share your knowledge.</p>\n        </div>\n    </div>\n    <div class=\"container page\">\n        <div class=\"row\">\n            <div class=\"col-md-9\">\n                <div class=\"feed-toggle\">\n                    <ul class=\"nav nav-pills outline-active\">\n                        <li class=\"nav-item\">\n                            <a class=\"nav-link\" *ngIf=\"authService.isLogin\" [ngClass]=\"tab == 1 ? 'active' : ''\"\n                                (click)=\"clickYourFeed()\">Your Feed</a>\n                        </li>\n                        <li class=\"nav-item\">\n                            <a class=\"nav-link\" [ngClass]=\"tab == 2 ? 'active' : ''\" (click)=\"clickGlobalFeed()\">Global\n                                Feed</a>\n                        </li>\n                        <li class=\"nav-item\">\n                            <a class=\"nav-link\" *ngIf=\"toggleTab\" [ngClass]=\"tab == 3 ? 'active' : ''\">#\n                                {{namePopularTag}}</a>\n                        </li>\n                    </ul>\n                </div>\n                <div *ngIf=\"listArticle\">\n                    <div class=\"article-preview\" *ngFor=\"let item of listArticle; let i = index\">\n                        <div class=\"article-meta\">\n                            <a href=\"profile.html\"><img [src]=\"item.author.image ? item.author.image : imgNull\" /></a>\n                            <div class=\"info\">\n                                <a [routerLink]=\"[item.author?.username]\" class=\"author\">{{item.author?.username}}</a>\n                                <span class=\"date\">{{item.updatedAt | date:'fullDate'}}</span>\n                            </div>\n                            <button class=\"btn btn-outline-primary btn-sm pull-xs-right\"\n                                [ngClass]=\"listArticle[i].favorited ? 'bg-button': ''\"\n                                (click)=\"toggleFavorite(item.slug, listArticle[i].favorited, i)\">\n                                <i class=\"ion-heart\"></i> {{listArticle[i].favoritesCount}}\n                            </button>\n                        </div>\n                        <a [routerLink]=\"['article/',item.slug]\" class=\"preview-link\">\n                            <h1>{{item.title}}</h1>\n                            <p>{{item.description}}</p>\n                            <span>Read more...</span>\n                            <ul class=\"tag-list\">\n                                <li class=\"tag-default text-dark tag-pill tag-outline ng-binding ng-scope\"\n                                    *ngFor=\"let item of item.tagList\">{{item}}</li>\n                            </ul>\n                        </a>\n                    </div>\n                </div>\n                <div class=\"article-preview\" *ngIf=\"listArticle?.length === 0\">No articles are here... yet.</div>\n            </div>\n            <div class=\"col-md-3\">\n                <div class=\"sidebar\">\n                    <p>Popular Tags</p>\n                    <div class=\"tag-list\">\n                        <a class=\"tag-pill tag-default\" *ngFor=\"let tag of listTabs\"\n                            (click)=\"clickPopularTags(tag)\">{{tag}}</a>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <div class=\"row justify-content-center\">\n            <ul *ngIf=\"pager.pages && pager.pages.length\" class=\"pagination mt-3\">\n                <li [ngClass]=\"{disabled:pager.currentPage === 1}\" class=\"page-item\">\n                    <a (click)=\"setPage(1)\" class=\"page-link\">First</a>\n                </li>\n                <li [ngClass]=\"{disabled:pager.currentPage === 1}\" class=\"page-item\">\n                    <a (click)=\"setPage(pager.currentPage - 1)\" class=\"page-link\">Previous</a>\n                </li>\n                <li *ngFor=\"let page of pager.pages\" [ngClass]=\"{active:pager.currentPage === page}\" class=\"page-item\">\n                    <a (click)=\"setPage(page)\" class=\"page-link\">{{page}}</a>\n                </li>\n                <li [ngClass]=\"{disabled:pager.currentPage === pager.totalPages}\" class=\"page-item\">\n                    <a (click)=\"setPage(pager.currentPage + 1)\" class=\"page-link\">Next</a>\n                </li>\n                <li [ngClass]=\"{disabled:pager.currentPage === pager.totalPages}\" class=\"page-item\">\n                    <a (click)=\"setPage(pager.totalPages)\" class=\"page-link\">Last</a>\n                </li>\n            </ul>\n        </div>\n    </div>\n</div>");
+            /* harmony default export */ __webpack_exports__["default"] = ("<button class=\"btn btn-sm\" [ngClass]=\"article.favorited  ? 'btn-primary': 'btn-outline-primary'\"\n    (click)=\"onChangeFavorite()\">\n    <i class=\"ion-heart\"></i> {{ text ? text : ''}} {{article.favoritesCount}}\n</button>");
             /***/ 
         }),
-        /***/ "./node_modules/raw-loader/dist/cjs.js!./src/app/not-found/not-found.component.html": 
-        /*!******************************************************************************************!*\
-          !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/not-found/not-found.component.html ***!
-          \******************************************************************************************/
+        /***/ "./node_modules/raw-loader/dist/cjs.js!./src/app/component/button/following-button/following-button.component.html": 
+        /*!*************************************************************************************************************************!*\
+          !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/component/button/following-button/following-button.component.html ***!
+          \*************************************************************************************************************************/
         /*! exports provided: default */
         /***/ (function (module, __webpack_exports__, __webpack_require__) {
             "use strict";
             __webpack_require__.r(__webpack_exports__);
-            /* harmony default export */ __webpack_exports__["default"] = ("<p>not-found works!</p>\n");
+            /* harmony default export */ __webpack_exports__["default"] = ("<button class=\"btn btn-sm btn-outline-secondary action-btn\"\n(click)=\"clickFollowUser()\">\n<i class=\"ion-plus-round\" *ngIf=\"!dataProfile?.following\"></i>\n&nbsp;\n{{dataProfile?.following ? 'Unfollow' : 'Follow'}} {{dataProfile?.username}}\n</button>\n");
             /***/ 
         }),
-        /***/ "./node_modules/raw-loader/dist/cjs.js!./src/app/profile/profile.component.html": 
-        /*!**************************************************************************************!*\
-          !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/profile/profile.component.html ***!
-          \**************************************************************************************/
-        /*! exports provided: default */
-        /***/ (function (module, __webpack_exports__, __webpack_require__) {
-            "use strict";
-            __webpack_require__.r(__webpack_exports__);
-            /* harmony default export */ __webpack_exports__["default"] = ("<div class=\"profile-page\">\n    <div class=\"user-info\">\n        <div class=\"container\">\n            <div class=\"row\">\n                <div class=\"col-xs-12 col-md-10 offset-md-1\">\n                    <img [src]=\"dataProfile?.image ? dataProfile.image : imgNull\" class=\"user-img\" />\n                    <h4>{{dataProfile?.username}}</h4>\n                    <p>\n                        {{dataProfile?.bio}}\n                    </p>\n                    <button class=\"btn btn-sm btn-outline-secondary action-btn\" *ngIf=\"!check\" (click)=\"clickFollowUser(dataProfile.username, dataProfile.following)\">\n                        <i class=\"ion-plus-round\" *ngIf=\"!dataProfile?.following\"></i>\n                        &nbsp;\n                        {{dataProfile?.following ? 'Unfollow' : 'Follow'}} {{dataProfile?.username}}\n                    </button>\n                    <button class=\"btn btn-sm btn-outline-secondary action-btn\" *ngIf=\"check\" routerLink=\"/setting\"\n                        routerLinkActive=\"router-link-active\">\n                        <i class=\"ion-gear-a\"></i>\n                        &nbsp;\n                        Edit Profile Settings\n                    </button>\n                </div>\n\n            </div>\n        </div>\n    </div>\n\n    <div class=\"container\">\n        <div class=\"row\">\n\n            <div class=\"col-xs-12 col-md-10 offset-md-1\">\n                <div class=\"articles-toggle\">\n                    <ul class=\"nav nav-pills outline-active\">\n                        <li class=\"nav-item\" (click)=\"clickMyArticle()\">\n                            <a class=\"nav-link\" [ngClass]=\"tab == 1 ? 'active' : ''\">My Articles</a>\n                        </li>\n                        <li class=\"nav-item\" (click)=\"clickFavoritedArticle()\">\n                            <a class=\"nav-link\" [ngClass]=\"tab == 2 ? 'active' : ''\">Favorited Articles</a>\n                        </li>\n                    </ul>\n                </div>\n\n                <div *ngIf=\"listArticle\">\n                    <div class=\"article-preview\" *ngFor=\"let item of listArticle; let i = index\">\n                        <div class=\"article-meta\">\n                            <a href=\"profile.html\"><img [src]=\"item.author.image ? item.author.image : imgNull\" /></a>\n                            <div class=\"info\">\n                                <a [routerLink]=\"['/',item.author?.username]\" routerLinkActive=\"router-link-active\" class=\"author\">{{item.author?.username}}</a>\n                                <span class=\"date\">{{item.updatedAt | date:'fullDate'}}</span>\n                            </div>\n                            <button class=\"btn btn-sm pull-xs-right\"\n                                [ngClass]=\"item.favorited ? 'btn-primary': 'btn-outline-primary'\"\n                                (click)=\"toggleFavorite(item.slug, listArticle[i].favorited, i)\">\n                                <i class=\"ion-heart\"></i> {{listArticle[i].favoritesCount}}\n                            </button>\n                        </div>\n                        <a [routerLink]=\"['/article/',item.slug]\"  class=\"preview-link\">\n                            <h1>{{item.title }}</h1>\n                            <p>{{item.description}}</p>\n                            <span>Read more...</span>\n                            <ul class=\"tag-list\">\n                                <li class=\"tag-default text-dark tag-pill tag-outline ng-binding ng-scope\"\n                                    *ngFor=\"let item of item.tagList\">{{item}}</li>\n                            </ul>\n                        </a>\n                    </div>\n                </div>\n                <div class=\"article-preview\" *ngIf=\"listArticle?.length === 0\">No articles are here... yet.</div>\n            </div>\n        </div>\n        <div class=\"row\">\n            <ul *ngIf=\"pager.pages && pager.pages.length\" class=\"pagination mt-3 offset-md-1\">\n                <li [ngClass]=\"{disabled:pager.currentPage === 1}\" class=\"page-item\">\n                    <a (click)=\"setPage(1)\" class=\"page-link\">First</a>\n                </li>\n                <li [ngClass]=\"{disabled:pager.currentPage === 1}\" class=\"page-item\">\n                    <a (click)=\"setPage(pager.currentPage - 1)\" class=\"page-link\">Previous</a>\n                </li>\n                <li *ngFor=\"let page of pager.pages\" [ngClass]=\"{active:pager.currentPage === page}\" class=\"page-item\">\n                    <a (click)=\"setPage(page)\" class=\"page-link\">{{page}}</a>\n                </li>\n                <li [ngClass]=\"{disabled:pager.currentPage === pager.totalPages}\" class=\"page-item\">\n                    <a (click)=\"setPage(pager.currentPage + 1)\" class=\"page-link\">Next</a>\n                </li>\n                <li [ngClass]=\"{disabled:pager.currentPage === pager.totalPages}\" class=\"page-item\">\n                    <a (click)=\"setPage(pager.totalPages)\" class=\"page-link\">Last</a>\n                </li>\n            </ul>\n        </div>\n    </div>\n</div>");
-            /***/ 
-        }),
-        /***/ "./node_modules/raw-loader/dist/cjs.js!./src/app/register/register.component.html": 
-        /*!****************************************************************************************!*\
-          !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/register/register.component.html ***!
-          \****************************************************************************************/
-        /*! exports provided: default */
-        /***/ (function (module, __webpack_exports__, __webpack_require__) {
-            "use strict";
-            __webpack_require__.r(__webpack_exports__);
-            /* harmony default export */ __webpack_exports__["default"] = ("<div class=\"auth-page\">\n    <div class=\"container page\">\n        <div class=\"row\">\n            <div class=\"col-md-6 offset-md-3 col-xs-12\">\n                <h1 class=\"text-xs-center\">Sign up</h1>\n                <p class=\"text-xs-center\">\n                    <a [routerLink]=\"['login']\">Have an account?</a>\n                </p>\n                <ul class=\"error-messages\" *ngIf=\"errregister\">\n                    <li>{{errregister[0]}}</li>\n                </ul>\n                <form (ngSubmit)=\"singup()\" [formGroup]=\"formUser\">\n                    <fieldset class=\"form-group\">\n                        <input class=\"form-control form-control-lg\" type=\"text\" placeholder=\"Your Name\"\n                            formControlName=\"username\">\n                    </fieldset>\n                    <fieldset class=\"form-group\">\n                        <input class=\"form-control form-control-lg\" type=\"email\" placeholder=\"Email\"\n                            formControlName=\"email\">\n                    </fieldset>\n                    <fieldset class=\"form-group\">\n                        <input class=\"form-control form-control-lg\" type=\"password\" placeholder=\"Password\"\n                            formControlName=\"password\">\n                    </fieldset>\n                    <button class=\"btn btn-lg btn-primary pull-xs-right\" [disabled]=\"formUser.invalid\">\n                        Sign up\n                    </button>\n                </form>\n            </div>\n        </div>\n    </div>\n</div>");
-            /***/ 
-        }),
-        /***/ "./node_modules/raw-loader/dist/cjs.js!./src/app/setting/setting.component.html": 
-        /*!**************************************************************************************!*\
-          !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/setting/setting.component.html ***!
-          \**************************************************************************************/
-        /*! exports provided: default */
-        /***/ (function (module, __webpack_exports__, __webpack_require__) {
-            "use strict";
-            __webpack_require__.r(__webpack_exports__);
-            /* harmony default export */ __webpack_exports__["default"] = ("<div class=\"settings-page\">\n  <div class=\"container page\">\n    <div class=\"row\">\n\n      <div class=\"col-md-6 offset-md-3 col-xs-12\">\n        <h1 class=\"text-xs-center\">Your Settings</h1>\n        <ul class=\"error-messages\" *ngIf=\"errSetting\">\n          <li *ngFor=\"let err of errSetting\">{{err}}</li>\n        </ul>\n        <form [formGroup]=\"formSetting\">\n          <fieldset>\n            <fieldset class=\"form-group\">\n              <img [src]=\"url? url : urlNull\" height=\"200\"> <br />\n              <input type='file' (change)=\"onSelectFile($event)\">\n            </fieldset>\n            <fieldset class=\"form-group\">\n              <input class=\"form-control form-control-lg\" type=\"text\" placeholder=\"Your Name\" formControlName=\"username\"\n                value=\"dataUser.username\">\n            </fieldset>\n            <fieldset class=\"form-group\">\n              <textarea class=\"form-control form-control-lg\" rows=\"8\" placeholder=\"Short bio about you\"\n                formControlName=\"bio\"></textarea>\n            </fieldset>\n            <fieldset class=\"form-group\">\n              <input class=\"form-control form-control-lg\" type=\"text\" placeholder=\"Email\" formControlName=\"email\">\n            </fieldset>\n            <fieldset class=\"form-group\">\n              <input class=\"form-control form-control-lg\" type=\"password\" placeholder=\"Password\"\n                formControlName=\"password\">\n            </fieldset>\n            <button class=\"btn btn-lg btn-primary pull-xs-right\" (click)=\"updateSetting()\">\n              Update Settings\n            </button>\n          </fieldset>\n        </form>\n      </div>\n\n    </div>\n  </div>\n</div>");
-            /***/ 
-        }),
-        /***/ "./node_modules/raw-loader/dist/cjs.js!./src/app/sign/sign.component.html": 
-        /*!********************************************************************************!*\
-          !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/sign/sign.component.html ***!
-          \********************************************************************************/
-        /*! exports provided: default */
-        /***/ (function (module, __webpack_exports__, __webpack_require__) {
-            "use strict";
-            __webpack_require__.r(__webpack_exports__);
-            /* harmony default export */ __webpack_exports__["default"] = ("<div class=\"auth-page\">\n    <div class=\"container page\">\n        <div class=\"row\">\n\n            <div class=\"col-md-6 offset-md-3 col-xs-12\">\n                <h1 class=\"text-xs-center\">Sign in</h1>\n                <p class=\"text-xs-center\">\n                    <a [routerLink]=\"['register']\" routerLinkActive=\"router-link-active\" >Need an account?</a>\n                </p>\n                <ul class=\"error-messages\" *ngIf=\"errorResponse\">\n                    <li>{{ errorResponse }}</li>\n                </ul>\n                <form [formGroup]=\"userForm\" (ngSubmit)=\"login()\">\n                    <fieldset class=\"form-group\">\n                        <input class=\"form-control form-control-lg\" type=\"email\" placeholder=\"Email\"\n                            formControlName=\"email\">\n                    </fieldset>\n                    <ul class=\"error-messages\"\n                        *ngIf=\"userForm.controls.email?.errors?.required && userForm.controls.email?.touched\">\n                        <li>Email is required</li>\n                    </ul>\n                    <ul class=\"error-messages\"\n                        *ngIf=\"userForm.controls.email?.errors?.pattern && userForm.controls.email?.touched\">\n                        <li>Not type email</li>\n                    </ul>\n                    <fieldset class=\"form-group\">\n                        <input class=\"form-control form-control-lg\" type=\"password\" placeholder=\"Password\"\n                            formControlName=\"password\">\n                    </fieldset>\n                    <ul class=\"error-messages\"\n                        *ngIf=\"userForm.controls.password?.errors?.required && userForm.controls.password?.touched\">\n                        <li>Password is required</li>\n                    </ul>\n                    <button class=\"btn btn-lg btn-primary pull-xs-right\" [disabled]=\"userForm.invalid\">\n                        Sign in\n                    </button>\n                </form>\n            </div>\n\n        </div>\n    </div>\n</div>");
-            /***/ 
-        }),
-        /***/ "./node_modules/raw-loader/dist/cjs.js!./src/app/user-detail/user-detail.component.html": 
+        /***/ "./node_modules/raw-loader/dist/cjs.js!./src/app/component/footer/footer.component.html": 
         /*!**********************************************************************************************!*\
-          !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/user-detail/user-detail.component.html ***!
+          !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/component/footer/footer.component.html ***!
           \**********************************************************************************************/
         /*! exports provided: default */
         /***/ (function (module, __webpack_exports__, __webpack_require__) {
             "use strict";
             __webpack_require__.r(__webpack_exports__);
-            /* harmony default export */ __webpack_exports__["default"] = ("<p>user-detail works!</p>\n");
+            /* harmony default export */ __webpack_exports__["default"] = ("<!-- Start footer -->\n<footer>\n    <div class=\"container\">\n      <a class=\"logo-font\">conduit</a>\n      <span class=\"attribution\">\n        An interactive learning project from <a>Thinkster</a>. Code &amp; design licensed\n        under MIT.\n      </span>\n    </div>\n  </footer>\n<!-- End footer -->");
+            /***/ 
+        }),
+        /***/ "./node_modules/raw-loader/dist/cjs.js!./src/app/component/header/header.component.html": 
+        /*!**********************************************************************************************!*\
+          !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/component/header/header.component.html ***!
+          \**********************************************************************************************/
+        /*! exports provided: default */
+        /***/ (function (module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            __webpack_require__.r(__webpack_exports__);
+            /* harmony default export */ __webpack_exports__["default"] = ("<nav class=\"navbar navbar-light\">\n    <div class=\"container\">\n        <a class=\"navbar-brand\" [routerLink]=\"['']\">conduit</a>\n        <ul class=\"nav navbar-nav pull-xs-right\">\n            <li class=\"nav-item\">\n                <!-- Add \"active\" class when you're on that page\" -->\n                <a class=\"nav-link\" routerLink=\"\" routerLinkActive=\"active\"\n                    [routerLinkActiveOptions]=\"{exact: true}\">Home</a>\n            </li>\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" routerLink=\"/article/new/editor\" routerLinkActive=\"active\" *ngIf=\"isLogin\">\n                    <i class=\"ion-compose\"></i>&nbsp;New Post\n                </a>\n            </li>\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" routerLink=\"/profile/setting\" routerLinkActive=\"active\" *ngIf=\"isLogin\">\n                    <i class=\"ion-gear-a\"></i>&nbsp;Settings\n                </a>\n            </li>\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" routerLink=\"login\" routerLinkActive=\"active\" *ngIf=\"!isLogin\">Sign in</a>\n            </li>\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" routerLink=\"register\" routerLinkActive=\"active\" *ngIf=\"!isLogin\">Sign up</a>\n            </li>\n            <li class=\"nav-item\" *ngIf=\"isLogin\">\n                <span><a class=\"nav-link\" [routerLink]=\"['profile/',userName]\" routerLinkActive=\"active\"> <img [src]=\"urlImage !== null ? urlImage : 'https://static.productionready.io/images/smiley-cyrus.jpg'\" class=\"user-pic\">{{userName}}</a></span>\n            </li>\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" (click)=\"logOut()\" *ngIf=\"isLogin\">Logout</a>\n            </li>\n        </ul>\n    </div>\n</nav>");
+            /***/ 
+        }),
+        /***/ "./node_modules/raw-loader/dist/cjs.js!./src/app/component/listArticle/list-article.component.html": 
+        /*!*********************************************************************************************************!*\
+          !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/component/listArticle/list-article.component.html ***!
+          \*********************************************************************************************************/
+        /*! exports provided: default */
+        /***/ (function (module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            __webpack_require__.r(__webpack_exports__);
+            /* harmony default export */ __webpack_exports__["default"] = ("<div class=\"article-preview\" *ngFor=\"let item of listArticle; let i = index\">\n    <div class=\"article-meta\">\n        <a><img [src]=\"item.author.image ? item.author.image : imgNull\" /></a>\n        <div class=\"info\">\n            <a [routerLink]=\"['/profile/',item?.author?.username]\" class=\"author\">{{item?.author?.username}}</a>\n            <span class=\"date\">{{item?.updatedAt | date:'fullDate'}}</span>\n        </div>\n        <app-favorite-button [article]=\"item\" (changeFavorite)=\"emitChangeFavorite($event, i)\" class=\"pull-xs-right\"></app-favorite-button>\n    </div>\n    <a [routerLink]=\"['/article/',item.slug]\" class=\"preview-link\">\n        <h1>{{item?.title}}</h1>\n        <p>{{item?.description}}</p>\n        <span>Read more...</span>\n        <ul class=\"tag-list\">\n            <li class=\"tag-default text-dark tag-pill tag-outline ng-binding ng-scope\"\n                *ngFor=\"let item of item.tagList\">{{item}}</li>\n        </ul>\n    </a>\n</div>");
+            /***/ 
+        }),
+        /***/ "./node_modules/raw-loader/dist/cjs.js!./src/app/component/pagination/pagination.component.html": 
+        /*!******************************************************************************************************!*\
+          !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/component/pagination/pagination.component.html ***!
+          \******************************************************************************************************/
+        /*! exports provided: default */
+        /***/ (function (module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            __webpack_require__.r(__webpack_exports__);
+            /* harmony default export */ __webpack_exports__["default"] = ("<ul *ngIf=\"pager.pages && pager.pages.length\" class=\"pagination mt-3\">\n    <li [ngClass]=\"{disabled:pager.currentPage === 1}\" class=\"page-item\">\n        <a (click)=\"setPage(1)\" class=\"page-link\">First</a>\n    </li>\n    <li [ngClass]=\"{disabled:pager.currentPage === 1}\" class=\"page-item\">\n        <a (click)=\"setPage(pager.currentPage - 1)\" class=\"page-link\">Previous</a>\n    </li>\n    <li *ngFor=\"let page of pager.pages\" [ngClass]=\"{active:pager.currentPage === page}\" class=\"page-item\">\n        <a (click)=\"setPage(page)\" class=\"page-link\">{{page}}</a>\n    </li>\n    <li [ngClass]=\"{disabled:pager.currentPage === pager.totalPages}\" class=\"page-item\">\n        <a (click)=\"setPage(pager.currentPage + 1)\" class=\"page-link\">Next</a>\n    </li>\n    <li [ngClass]=\"{disabled:pager.currentPage === pager.totalPages}\" class=\"page-item\">\n        <a (click)=\"setPage(pager.totalPages)\" class=\"page-link\">Last</a>\n    </li>\n</ul>");
+            /***/ 
+        }),
+        /***/ "./node_modules/raw-loader/dist/cjs.js!./src/app/homePage/home-page.component.html": 
+        /*!*****************************************************************************************!*\
+          !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/homePage/home-page.component.html ***!
+          \*****************************************************************************************/
+        /*! exports provided: default */
+        /***/ (function (module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            __webpack_require__.r(__webpack_exports__);
+            /* harmony default export */ __webpack_exports__["default"] = ("<div class=\"home-page\" *ngIf=\"listArticle\">\n    <div class=\"banner\" *ngIf=\"!isLogin\">\n        <div class=\"container\">\n            <h1 class=\"logo-font\">conduit</h1>\n            <p>A place to share your knowledge.</p>\n        </div>\n    </div>\n    <div class=\"container page\">\n        <div class=\"row\">\n            <div class=\"col-md-9\">\n                <div class=\"feed-toggle\">\n                    <ul class=\"nav nav-pills outline-active\">\n                        <li class=\"nav-item\">\n                            <a class=\"nav-link\" *ngIf=\"isLogin\" [ngClass]=\"tab == 1 ? 'active' : ''\"\n                                (click)=\"clickYourFeed()\">Your Feed</a>\n                        </li>\n                        <li class=\"nav-item\">\n                            <a class=\"nav-link\" [ngClass]=\"tab == 2 ? 'active' : ''\" (click)=\"clickGlobalFeed()\">Global\n                                Feed</a>\n                        </li>\n                        <li class=\"nav-item\">\n                            <a class=\"nav-link\" *ngIf=\"toggleTab\" [ngClass]=\"tab == 3 ? 'active' : ''\">#\n                                {{namePopularTag}}</a>\n                        </li>\n                    </ul>\n                </div>\n                <div class=\"article-preview\" *ngIf=\"loadingArticle\">Loading article...</div>\n                <div *ngIf=\"!loadingArticle\">\n                    <app-list-article [listArticle]='listArticle'  *ngIf=\"listArticle\">\n                    </app-list-article>\n                    <div class=\"article-preview\" *ngIf=\"listArticle?.length === 0\">No articles are here... yet.</div>\n                </div>\n            </div>\n            <div class=\"col-md-3\">\n                <div class=\"sidebar\">\n                    <p>Popular Tags</p>\n                    <div class=\"tag-list\">\n                        <a class=\"tag-pill tag-default\" *ngFor=\"let tag of listTabs\"\n                            (click)=\"clickPopularTags(tag)\">{{tag}}</a>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <div class=\"row\" *ngIf=\"listArticle?.length !== 0\">\n            <app-pagination [pager]=\"pager\" (clickPage)=\"setPage($event)\"></app-pagination>\n        </div>\n    </div>\n</div>");
             /***/ 
         }),
         /***/ "./node_modules/tslib/tslib.es6.js": 
@@ -442,37 +459,11 @@
             /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
             /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
             /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
-            /* harmony import */ var _home_home_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./home/home.component */ "./src/app/home/home.component.ts");
-            /* harmony import */ var _sign_sign_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./sign/sign.component */ "./src/app/sign/sign.component.ts");
-            /* harmony import */ var _setting_setting_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./setting/setting.component */ "./src/app/setting/setting.component.ts");
-            /* harmony import */ var _register_register_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./register/register.component */ "./src/app/register/register.component.ts");
-            /* harmony import */ var _profile_profile_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./profile/profile.component */ "./src/app/profile/profile.component.ts");
-            /* harmony import */ var _article_detail_article_detail_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./article-detail/article-detail.component */ "./src/app/article-detail/article-detail.component.ts");
-            /* harmony import */ var _editor_editor_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./editor/editor.component */ "./src/app/editor/editor.component.ts");
-            /* harmony import */ var _services_auth_guast_guard__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./services/auth-guast.guard */ "./src/app/services/auth-guast.guard.ts");
-            /* harmony import */ var _not_found_not_found_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./not-found/not-found.component */ "./src/app/not-found/not-found.component.ts");
+            /* harmony import */ var _homePage_home_page_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./homePage/home-page.component */ "./src/app/homePage/home-page.component.ts");
             var routes = [
-                { path: '', component: _home_home_component__WEBPACK_IMPORTED_MODULE_3__["HomeComponent"] },
-                { path: 'login', component: _sign_sign_component__WEBPACK_IMPORTED_MODULE_4__["SignComponent"] },
-                {
-                    path: 'setting', canActivate: [_services_auth_guast_guard__WEBPACK_IMPORTED_MODULE_10__["AuthGuastGuard"]], children: [
-                        { path: '', component: _setting_setting_component__WEBPACK_IMPORTED_MODULE_5__["SettingComponent"] }
-                    ]
-                },
-                { path: 'register', component: _register_register_component__WEBPACK_IMPORTED_MODULE_6__["RegisterComponent"] },
-                { path: ':userName', component: _profile_profile_component__WEBPACK_IMPORTED_MODULE_7__["ProfileComponent"] },
-                { path: 'article/:slug', component: _article_detail_article_detail_component__WEBPACK_IMPORTED_MODULE_8__["ArticleDetailComponent"] },
-                {
-                    path: 'new/editor', canActivate: [_services_auth_guast_guard__WEBPACK_IMPORTED_MODULE_10__["AuthGuastGuard"]], children: [
-                        { path: '', component: _editor_editor_component__WEBPACK_IMPORTED_MODULE_9__["EditorComponent"] }
-                    ]
-                },
-                {
-                    path: 'editor/:slug', canActivate: [_services_auth_guast_guard__WEBPACK_IMPORTED_MODULE_10__["AuthGuastGuard"]], children: [
-                        { path: '', component: _editor_editor_component__WEBPACK_IMPORTED_MODULE_9__["EditorComponent"] }
-                    ]
-                },
-                { path: '**', component: _not_found_not_found_component__WEBPACK_IMPORTED_MODULE_11__["NotFoundComponent"] }
+                { path: '', component: _homePage_home_page_component__WEBPACK_IMPORTED_MODULE_3__["HomePageComponent"] },
+                { path: 'profile', loadChildren: './userModule/user.module#UserModule' },
+                { path: 'article', loadChildren: './articleModule/article.module#ArticleModule' },
             ];
             var AppRoutingModule = /** @class */ (function () {
                 function AppRoutingModule() {
@@ -481,7 +472,7 @@
             }());
             AppRoutingModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
                 Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
-                    imports: [_angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterModule"].forRoot(routes, { useHash: true })],
+                    imports: [_angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterModule"].forRoot(routes, { preloadingStrategy: _angular_router__WEBPACK_IMPORTED_MODULE_2__["PreloadAllModules"] })],
                     exports: [_angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterModule"]]
                 })
             ], AppRoutingModule);
@@ -509,20 +500,12 @@
             /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppComponent", function () { return AppComponent; });
             /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
             /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
-            /* harmony import */ var _services_auth_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./services/auth.service */ "./src/app/services/auth.service.ts");
             var AppComponent = /** @class */ (function () {
-                function AppComponent(authService) {
-                    this.authService = authService;
-                    this.name = '';
+                function AppComponent() {
+                    this.title = 'projectApp';
                 }
-                AppComponent.prototype.logout = function () {
-                    this.authService.logOut();
-                };
                 return AppComponent;
             }());
-            AppComponent.ctorParameters = function () { return [
-                { type: _services_auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"] }
-            ]; };
             AppComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
                 Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
                     selector: 'app-root',
@@ -544,19 +527,13 @@
             /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
             /* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/platform-browser */ "./node_modules/@angular/platform-browser/fesm2015/platform-browser.js");
             /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
-            /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm2015/forms.js");
-            /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm2015/http.js");
-            /* harmony import */ var _app_routing_module__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./app-routing.module */ "./src/app/app-routing.module.ts");
-            /* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./app.component */ "./src/app/app.component.ts");
-            /* harmony import */ var _home_home_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./home/home.component */ "./src/app/home/home.component.ts");
-            /* harmony import */ var _sign_sign_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./sign/sign.component */ "./src/app/sign/sign.component.ts");
-            /* harmony import */ var _setting_setting_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./setting/setting.component */ "./src/app/setting/setting.component.ts");
-            /* harmony import */ var _editor_editor_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./editor/editor.component */ "./src/app/editor/editor.component.ts");
-            /* harmony import */ var _profile_profile_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./profile/profile.component */ "./src/app/profile/profile.component.ts");
-            /* harmony import */ var _register_register_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./register/register.component */ "./src/app/register/register.component.ts");
-            /* harmony import */ var _user_detail_user_detail_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./user-detail/user-detail.component */ "./src/app/user-detail/user-detail.component.ts");
-            /* harmony import */ var _article_detail_article_detail_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./article-detail/article-detail.component */ "./src/app/article-detail/article-detail.component.ts");
-            /* harmony import */ var _not_found_not_found_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./not-found/not-found.component */ "./src/app/not-found/not-found.component.ts");
+            /* harmony import */ var _app_routing_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./app-routing.module */ "./src/app/app-routing.module.ts");
+            /* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./app.component */ "./src/app/app.component.ts");
+            /* harmony import */ var _homePage_home_page_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./homePage/home-page.component */ "./src/app/homePage/home-page.component.ts");
+            /* harmony import */ var _authModule_auth_module__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./authModule/auth.module */ "./src/app/authModule/auth.module.ts");
+            /* harmony import */ var _shared_shared_module__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./shared/shared.module */ "./src/app/shared/shared.module.ts");
+            /* harmony import */ var _component_header_header_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./component/header/header.component */ "./src/app/component/header/header.component.ts");
+            /* harmony import */ var _component_footer_footer_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./component/footer/footer.component */ "./src/app/component/footer/footer.component.ts");
             var AppModule = /** @class */ (function () {
                 function AppModule() {
                 }
@@ -565,1034 +542,54 @@
             AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
                 Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["NgModule"])({
                     declarations: [
-                        _app_component__WEBPACK_IMPORTED_MODULE_6__["AppComponent"],
-                        _home_home_component__WEBPACK_IMPORTED_MODULE_7__["HomeComponent"],
-                        _sign_sign_component__WEBPACK_IMPORTED_MODULE_8__["SignComponent"],
-                        _setting_setting_component__WEBPACK_IMPORTED_MODULE_9__["SettingComponent"],
-                        _editor_editor_component__WEBPACK_IMPORTED_MODULE_10__["EditorComponent"],
-                        _profile_profile_component__WEBPACK_IMPORTED_MODULE_11__["ProfileComponent"],
-                        _register_register_component__WEBPACK_IMPORTED_MODULE_12__["RegisterComponent"],
-                        _user_detail_user_detail_component__WEBPACK_IMPORTED_MODULE_13__["UserDetailComponent"],
-                        _article_detail_article_detail_component__WEBPACK_IMPORTED_MODULE_14__["ArticleDetailComponent"],
-                        _not_found_not_found_component__WEBPACK_IMPORTED_MODULE_15__["NotFoundComponent"],
+                        _app_component__WEBPACK_IMPORTED_MODULE_4__["AppComponent"],
+                        _component_header_header_component__WEBPACK_IMPORTED_MODULE_8__["HeaderComponent"],
+                        _component_footer_footer_component__WEBPACK_IMPORTED_MODULE_9__["FooterComponent"],
+                        _homePage_home_page_component__WEBPACK_IMPORTED_MODULE_5__["HomePageComponent"],
                     ],
                     imports: [
                         _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
-                        _app_routing_module__WEBPACK_IMPORTED_MODULE_5__["AppRoutingModule"],
-                        _angular_common_http__WEBPACK_IMPORTED_MODULE_4__["HttpClientModule"],
-                        _angular_forms__WEBPACK_IMPORTED_MODULE_3__["ReactiveFormsModule"],
-                        _angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormsModule"]
+                        _authModule_auth_module__WEBPACK_IMPORTED_MODULE_6__["AuthModule"],
+                        _app_routing_module__WEBPACK_IMPORTED_MODULE_3__["AppRoutingModule"],
+                        _shared_shared_module__WEBPACK_IMPORTED_MODULE_7__["SharedModule"].forRoot()
                     ],
                     providers: [],
-                    bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_6__["AppComponent"]]
+                    bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_4__["AppComponent"]]
                 })
             ], AppModule);
             /***/ 
         }),
-        /***/ "./src/app/article-detail/article-detail.component.css": 
-        /*!*************************************************************!*\
-          !*** ./src/app/article-detail/article-detail.component.css ***!
-          \*************************************************************/
-        /*! exports provided: default */
+        /***/ "./src/app/app.service.ts": 
+        /*!********************************!*\
+          !*** ./src/app/app.service.ts ***!
+          \********************************/
+        /*! exports provided: AppService */
         /***/ (function (module, __webpack_exports__, __webpack_require__) {
             "use strict";
             __webpack_require__.r(__webpack_exports__);
-            /* harmony default export */ __webpack_exports__["default"] = ("\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2FydGljbGUtZGV0YWlsL2FydGljbGUtZGV0YWlsLmNvbXBvbmVudC5jc3MifQ== */");
-            /***/ 
-        }),
-        /***/ "./src/app/article-detail/article-detail.component.ts": 
-        /*!************************************************************!*\
-          !*** ./src/app/article-detail/article-detail.component.ts ***!
-          \************************************************************/
-        /*! exports provided: ArticleDetailComponent */
-        /***/ (function (module, __webpack_exports__, __webpack_require__) {
-            "use strict";
-            __webpack_require__.r(__webpack_exports__);
-            /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ArticleDetailComponent", function () { return ArticleDetailComponent; });
+            /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppService", function () { return AppService; });
             /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
             /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
-            /* harmony import */ var _services_article_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../services/article.service */ "./src/app/services/article.service.ts");
-            /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
-            var ArticleDetailComponent = /** @class */ (function () {
-                function ArticleDetailComponent(articleService, route, router) {
-                    var _this = this;
-                    this.articleService = articleService;
-                    this.route = route;
-                    this.router = router;
-                    this.textBody = '';
-                    this.imgNull = 'https://static.productionready.io/images/smiley-cyrus.jpg';
-                    if (localStorage.getItem('token')) {
-                        this.isLogin = true;
-                        this.nameUserIslogin = localStorage.getItem('name');
-                    }
-                    else {
-                        this.isLogin = false;
-                    }
-                    this.route.params.subscribe(function (param) {
-                        _this.slug = param['slug'];
-                        _this.img = localStorage.getItem('image');
-                        console.log(_this.img);
-                        _this.articleService.getArticleDetail(param.slug).subscribe(function (article) {
-                            if (article['article'].author.username == localStorage.getItem('name')) {
-                                _this.check = true;
-                            }
-                            else {
-                                _this.check = false;
-                            }
-                            _this.article = article['article'];
-                        });
-                    });
+            var AppService = /** @class */ (function () {
+                function AppService() {
                 }
-                ArticleDetailComponent.prototype.ngOnInit = function () {
-                    var _this = this;
-                    this.articleService.getCommentArticle(this.slug).subscribe(function (data) {
-                        _this.listComment = data['comments'];
+                AppService.prototype.getError = function (err) {
+                    var error = err.error.errors;
+                    var key = Object.keys(error);
+                    var mes = [];
+                    key.forEach(function (ele) {
+                        mes.push(ele + ' ' + error[ele]);
                     });
+                    return mes;
                 };
-                ArticleDetailComponent.prototype.deleteArticle = function () {
-                    if (this.check) {
-                        this.articleService.deleteArticle(this.slug).subscribe(function (data) {
-                        });
-                        this.router.navigate(['/', this.nameUserIslogin]);
-                    }
-                };
-                //FollowUser
-                ArticleDetailComponent.prototype.clickFollowUser = function (userName, following) {
-                    var _this = this;
-                    if (localStorage.getItem('token')) {
-                        if (!following) {
-                            this.articleService.postFollowUser(userName).subscribe(function (data) {
-                                _this.article.author = data['profile'];
-                            });
-                        }
-                        else {
-                            this.articleService.deleteFollowUser(userName).subscribe(function (data) {
-                                _this.article.author = data['profile'];
-                            });
-                        }
-                    }
-                    else {
-                        this.router.navigate(['login']);
-                    }
-                };
-                //toggleFavorite
-                ArticleDetailComponent.prototype.toggleFavorite = function (slug, favorited) {
-                    var _this = this;
-                    if (localStorage.getItem('token')) {
-                        if (favorited == false) {
-                            this.articleService.postFavoriteArticle(slug).subscribe(function (data) {
-                                _this.article = data['article'];
-                            });
-                        }
-                        else if (favorited == true) {
-                            this.articleService.deleteFavoriteArticle(slug).subscribe(function (data) {
-                                _this.article = data['article'];
-                            });
-                        }
-                    }
-                    else {
-                        this.router.navigate(['login']);
-                    }
-                };
-                //comment
-                ArticleDetailComponent.prototype.postNewComment = function () {
-                    var _this = this;
-                    if (localStorage.getItem('token')) {
-                        this.articleService.postCommentArticle(this.slug, { 'body': this.textBody }).subscribe(function (data) {
-                            _this.listComment.unshift(data['comment']);
-                        });
-                    }
-                    else {
-                        this.isLogin = false;
-                    }
-                    this.textBody = "";
-                };
-                ArticleDetailComponent.prototype.deleteComment = function (id, index) {
-                    var _this = this;
-                    if (this.isLogin) {
-                        this.articleService.deleteCommentArticle(this.slug, id).subscribe(function (data) {
-                            _this.listComment.splice(index, 1);
-                        });
-                    }
-                };
-                return ArticleDetailComponent;
-            }());
-            ArticleDetailComponent.ctorParameters = function () { return [
-                { type: _services_article_service__WEBPACK_IMPORTED_MODULE_2__["ArticleService"] },
-                { type: _angular_router__WEBPACK_IMPORTED_MODULE_3__["ActivatedRoute"] },
-                { type: _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"] }
-            ]; };
-            ArticleDetailComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-                Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
-                    selector: 'app-article-detail',
-                    template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! raw-loader!./article-detail.component.html */ "./node_modules/raw-loader/dist/cjs.js!./src/app/article-detail/article-detail.component.html")).default,
-                    styles: [tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! ./article-detail.component.css */ "./src/app/article-detail/article-detail.component.css")).default]
-                })
-            ], ArticleDetailComponent);
-            /***/ 
-        }),
-        /***/ "./src/app/editor/editor.component.css": 
-        /*!*********************************************!*\
-          !*** ./src/app/editor/editor.component.css ***!
-          \*********************************************/
-        /*! exports provided: default */
-        /***/ (function (module, __webpack_exports__, __webpack_require__) {
-            "use strict";
-            __webpack_require__.r(__webpack_exports__);
-            /* harmony default export */ __webpack_exports__["default"] = ("\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2VkaXRvci9lZGl0b3IuY29tcG9uZW50LmNzcyJ9 */");
-            /***/ 
-        }),
-        /***/ "./src/app/editor/editor.component.ts": 
-        /*!********************************************!*\
-          !*** ./src/app/editor/editor.component.ts ***!
-          \********************************************/
-        /*! exports provided: EditorComponent */
-        /***/ (function (module, __webpack_exports__, __webpack_require__) {
-            "use strict";
-            __webpack_require__.r(__webpack_exports__);
-            /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EditorComponent", function () { return EditorComponent; });
-            /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-            /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
-            /* harmony import */ var _services_article_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../services/article.service */ "./src/app/services/article.service.ts");
-            /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm2015/forms.js");
-            /* harmony import */ var _services_register_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../services/register.service */ "./src/app/services/register.service.ts");
-            /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
-            var EditorComponent = /** @class */ (function () {
-                function EditorComponent(articleService, registerService, route, router, fb) {
-                    var _this = this;
-                    this.articleService = articleService;
-                    this.registerService = registerService;
-                    this.route = route;
-                    this.router = router;
-                    this.fb = fb;
-                    this.check = false;
-                    this.tagList = [];
-                    this.formArticle = fb.group({
-                        title: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_3__["Validators"].required],
-                        description: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_3__["Validators"].required],
-                        body: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_3__["Validators"].required],
-                    });
-                    this.route.params.subscribe(function (param) {
-                        if (param['slug']) {
-                            _this.check = true;
-                            _this.slug = param['slug'];
-                            _this.articleService.getArticleDetail(param['slug']).subscribe(function (data) {
-                                _this.formArticle = fb.group({
-                                    title: [data['article'].title, _angular_forms__WEBPACK_IMPORTED_MODULE_3__["Validators"].required],
-                                    description: [data['article'].description, _angular_forms__WEBPACK_IMPORTED_MODULE_3__["Validators"].required],
-                                    body: [data['article'].body, _angular_forms__WEBPACK_IMPORTED_MODULE_3__["Validators"].required],
-                                });
-                                _this.tagList = data['article'].tagList;
-                            });
-                        }
-                    });
-                }
-                EditorComponent.prototype.ngOnInit = function () {
-                };
-                EditorComponent.prototype.pushTab = function (event) {
-                    event.stopPropagation();
-                    if (event.target['value'] !== '') {
-                        this.tagList.push(event.target['value']);
-                    }
-                    event.target['value'] = '';
-                };
-                EditorComponent.prototype.postArticle = function () {
-                    var _this = this;
-                    // console.log(this.formArticle.value);
-                    this.newArticle = this.formArticle.value;
-                    if (this.tagList) {
-                        this.newArticle.tagList = this.tagList;
-                    }
-                    if (!this.check) {
-                        this.articleService.postNewArticle(this.newArticle).subscribe(function (data) {
-                        }, function (err) {
-                            _this.errNewArticle = _this.registerService.getError(err);
-                        });
-                    }
-                    else {
-                        this.articleService.updateArticle(this.newArticle, this.slug).subscribe(function (data) {
-                        }, function (err) {
-                            _this.errNewArticle = _this.registerService.getError(err);
-                        });
-                    }
-                    this.router.navigate(['/', localStorage.getItem('name')]);
-                };
-                EditorComponent.prototype.removetab = function (index) {
-                    this.tagList.splice(index, 1);
-                };
-                return EditorComponent;
-            }());
-            EditorComponent.ctorParameters = function () { return [
-                { type: _services_article_service__WEBPACK_IMPORTED_MODULE_2__["ArticleService"] },
-                { type: _services_register_service__WEBPACK_IMPORTED_MODULE_4__["RegisterService"] },
-                { type: _angular_router__WEBPACK_IMPORTED_MODULE_5__["ActivatedRoute"] },
-                { type: _angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"] },
-                { type: _angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormBuilder"] }
-            ]; };
-            EditorComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-                Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
-                    selector: 'app-editor',
-                    template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! raw-loader!./editor.component.html */ "./node_modules/raw-loader/dist/cjs.js!./src/app/editor/editor.component.html")).default,
-                    styles: [tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! ./editor.component.css */ "./src/app/editor/editor.component.css")).default]
-                })
-            ], EditorComponent);
-            /***/ 
-        }),
-        /***/ "./src/app/home/home.component.css": 
-        /*!*****************************************!*\
-          !*** ./src/app/home/home.component.css ***!
-          \*****************************************/
-        /*! exports provided: default */
-        /***/ (function (module, __webpack_exports__, __webpack_require__) {
-            "use strict";
-            __webpack_require__.r(__webpack_exports__);
-            /* harmony default export */ __webpack_exports__["default"] = (".bg-button {\r\n    background-color: #5CB85c;\r\n    color: white;\r\n}\r\n.tag-list {\r\n    cursor: pointer;\r\n}\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvaG9tZS9ob21lLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7SUFDSSx5QkFBeUI7SUFDekIsWUFBWTtBQUNoQjtBQUNBO0lBQ0ksZUFBZTtBQUNuQiIsImZpbGUiOiJzcmMvYXBwL2hvbWUvaG9tZS5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmJnLWJ1dHRvbiB7XHJcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiAjNUNCODVjO1xyXG4gICAgY29sb3I6IHdoaXRlO1xyXG59XHJcbi50YWctbGlzdCB7XHJcbiAgICBjdXJzb3I6IHBvaW50ZXI7XHJcbn0iXX0= */");
-            /***/ 
-        }),
-        /***/ "./src/app/home/home.component.ts": 
-        /*!****************************************!*\
-          !*** ./src/app/home/home.component.ts ***!
-          \****************************************/
-        /*! exports provided: HomeComponent */
-        /***/ (function (module, __webpack_exports__, __webpack_require__) {
-            "use strict";
-            __webpack_require__.r(__webpack_exports__);
-            /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HomeComponent", function () { return HomeComponent; });
-            /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-            /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
-            /* harmony import */ var _services_article_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../services/article.service */ "./src/app/services/article.service.ts");
-            /* harmony import */ var _services_auth_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../services/auth.service */ "./src/app/services/auth.service.ts");
-            /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
-            /* harmony import */ var _services_paper_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../services/paper.service */ "./src/app/services/paper.service.ts");
-            var HomeComponent = /** @class */ (function () {
-                function HomeComponent(articleService, authService, router, pagerService) {
-                    this.articleService = articleService;
-                    this.authService = authService;
-                    this.router = router;
-                    this.pagerService = pagerService;
-                    this.toggleTab = false;
-                    this.tab = 2;
-                    this.imgNull = 'https://static.productionready.io/images/smiley-cyrus.jpg';
-                    this.namePopularTag = '';
-                    //pages
-                    this.pager = {};
-                }
-                HomeComponent.prototype.ngOnInit = function () {
-                    var _this = this;
-                    this.articleService.getGlobalArticle(this.authService.isLogin, 0).subscribe(function (data) {
-                        _this.listGlobalArticle = data['articles'];
-                        _this.listArticle = data['articles'];
-                        _this.total2 = data['articlesCount'];
-                        _this.setPage(1);
-                    });
-                    this.articleService.getTabs().subscribe(function (data) {
-                        _this.listTabs = data['tags'];
-                    });
-                };
-                HomeComponent.prototype.clickYourFeed = function () {
-                    var _this = this;
-                    this.tab = 1;
-                    this.toggleTab = false;
-                    var name = localStorage.getItem('name');
-                    this.articleService.getHomeArticle(0).subscribe(function (data) {
-                        _this.listArticle = data['articles'];
-                        _this.listYouFeed = data['articles'];
-                        _this.total1 = data['articlesCount'];
-                        _this.setPage(1);
-                    });
-                };
-                HomeComponent.prototype.clickGlobalFeed = function () {
-                    var _this = this;
-                    this.tab = 2;
-                    this.toggleTab = false;
-                    this.articleService.getGlobalArticle(this.authService.isLogin, 0).subscribe(function (data) {
-                        _this.listGlobalArticle = data['articles'];
-                        _this.listArticle = data['articles'];
-                        _this.total2 = data['articlesCount'];
-                        _this.setPage(1);
-                    });
-                };
-                HomeComponent.prototype.clickPopularTags = function (nameTab) {
-                    var _this = this;
-                    this.namePopularTag = nameTab;
-                    this.tab = 3;
-                    this.toggleTab = true;
-                    this.articleService.getTabArticle(nameTab, this.authService.isLogin, 0).subscribe(function (data) {
-                        _this.listArticle = data['articles'];
-                        _this.listPopularTags = data['articles'];
-                        _this.total3 = data['articlesCount'];
-                        _this.setPage(1);
-                    });
-                };
-                HomeComponent.prototype.toggleFavorite = function (slug, favorited, i) {
-                    var _this = this;
-                    if (this.authService.isLogin) {
-                        if (favorited == false) {
-                            this.articleService.postFavoriteArticle(slug).subscribe(function (data) {
-                                _this.listArticle[i] = data['article'];
-                            });
-                        }
-                        else if (favorited == true) {
-                            this.articleService.deleteFavoriteArticle(slug).subscribe(function (data) {
-                                _this.listArticle[i] = data['article'];
-                            });
-                        }
-                    }
-                    else {
-                        this.router.navigate(['login']);
-                    }
-                };
-                // phan trang
-                HomeComponent.prototype.getDataPage = function (offset) {
-                    var _this = this;
-                    var offSetPage = offset * 10;
-                    switch (this.tab) {
-                        case 1:
-                            var name = localStorage.getItem('name');
-                            this.articleService.getHomeArticle(offSetPage).subscribe(function (data) {
-                                _this.listArticle = data['articles'];
-                            });
-                            break;
-                        case 2:
-                            this.articleService.getGlobalArticle(this.authService.isLogin, offSetPage).subscribe(function (data) {
-                                _this.listArticle = data['articles'];
-                            });
-                            break;
-                        case 3:
-                            this.articleService.getTabArticle(this.namePopularTag, this.authService.isLogin, offSetPage).subscribe(function (data) {
-                                _this.listArticle = data['articles'];
-                            });
-                            break;
-                    }
-                };
-                HomeComponent.prototype.setPage = function (page) {
-                    if (page < 1 || page > this.pager.totalPages) {
-                        return;
-                    }
-                    // get pager object from service
-                    switch (this.tab) {
-                        case 1:
-                            this.pager = this.pagerService.getPager(this.total1, page, 10);
-                            this.getDataPage(page - 1);
-                            break;
-                        case 2:
-                            this.pager = this.pagerService.getPager(this.total2, page, 10);
-                            this.getDataPage(page - 1);
-                            break;
-                        case 3:
-                            this.pager = this.pagerService.getPager(this.total3, page, 10);
-                            this.getDataPage(page - 1);
-                            break;
-                    }
-                };
-                return HomeComponent;
-            }());
-            HomeComponent.ctorParameters = function () { return [
-                { type: _services_article_service__WEBPACK_IMPORTED_MODULE_2__["ArticleService"] },
-                { type: _services_auth_service__WEBPACK_IMPORTED_MODULE_3__["AuthService"] },
-                { type: _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"] },
-                { type: _services_paper_service__WEBPACK_IMPORTED_MODULE_5__["PaperService"] }
-            ]; };
-            HomeComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-                Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
-                    selector: 'app-home',
-                    template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! raw-loader!./home.component.html */ "./node_modules/raw-loader/dist/cjs.js!./src/app/home/home.component.html")).default,
-                    styles: [tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! ./home.component.css */ "./src/app/home/home.component.css")).default]
-                })
-            ], HomeComponent);
-            /***/ 
-        }),
-        /***/ "./src/app/not-found/not-found.component.css": 
-        /*!***************************************************!*\
-          !*** ./src/app/not-found/not-found.component.css ***!
-          \***************************************************/
-        /*! exports provided: default */
-        /***/ (function (module, __webpack_exports__, __webpack_require__) {
-            "use strict";
-            __webpack_require__.r(__webpack_exports__);
-            /* harmony default export */ __webpack_exports__["default"] = ("\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL25vdC1mb3VuZC9ub3QtZm91bmQuY29tcG9uZW50LmNzcyJ9 */");
-            /***/ 
-        }),
-        /***/ "./src/app/not-found/not-found.component.ts": 
-        /*!**************************************************!*\
-          !*** ./src/app/not-found/not-found.component.ts ***!
-          \**************************************************/
-        /*! exports provided: NotFoundComponent */
-        /***/ (function (module, __webpack_exports__, __webpack_require__) {
-            "use strict";
-            __webpack_require__.r(__webpack_exports__);
-            /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NotFoundComponent", function () { return NotFoundComponent; });
-            /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-            /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
-            var NotFoundComponent = /** @class */ (function () {
-                function NotFoundComponent() {
-                }
-                NotFoundComponent.prototype.ngOnInit = function () {
-                };
-                return NotFoundComponent;
-            }());
-            NotFoundComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-                Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
-                    selector: 'app-not-found',
-                    template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! raw-loader!./not-found.component.html */ "./node_modules/raw-loader/dist/cjs.js!./src/app/not-found/not-found.component.html")).default,
-                    styles: [tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! ./not-found.component.css */ "./src/app/not-found/not-found.component.css")).default]
-                })
-            ], NotFoundComponent);
-            /***/ 
-        }),
-        /***/ "./src/app/profile/profile.component.css": 
-        /*!***********************************************!*\
-          !*** ./src/app/profile/profile.component.css ***!
-          \***********************************************/
-        /*! exports provided: default */
-        /***/ (function (module, __webpack_exports__, __webpack_require__) {
-            "use strict";
-            __webpack_require__.r(__webpack_exports__);
-            /* harmony default export */ __webpack_exports__["default"] = (".bg-button {\r\n    background-color: #5CB85c;\r\n    color: white;\r\n}\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvcHJvZmlsZS9wcm9maWxlLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7SUFDSSx5QkFBeUI7SUFDekIsWUFBWTtBQUNoQiIsImZpbGUiOiJzcmMvYXBwL3Byb2ZpbGUvcHJvZmlsZS5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmJnLWJ1dHRvbiB7XHJcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiAjNUNCODVjO1xyXG4gICAgY29sb3I6IHdoaXRlO1xyXG59Il19 */");
-            /***/ 
-        }),
-        /***/ "./src/app/profile/profile.component.ts": 
-        /*!**********************************************!*\
-          !*** ./src/app/profile/profile.component.ts ***!
-          \**********************************************/
-        /*! exports provided: ProfileComponent */
-        /***/ (function (module, __webpack_exports__, __webpack_require__) {
-            "use strict";
-            __webpack_require__.r(__webpack_exports__);
-            /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ProfileComponent", function () { return ProfileComponent; });
-            /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-            /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
-            /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
-            /* harmony import */ var _services_article_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../services/article.service */ "./src/app/services/article.service.ts");
-            /* harmony import */ var _services_profile_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../services/profile.service */ "./src/app/services/profile.service.ts");
-            /* harmony import */ var _services_paper_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../services/paper.service */ "./src/app/services/paper.service.ts");
-            /* harmony import */ var _services_auth_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../services/auth.service */ "./src/app/services/auth.service.ts");
-            var ProfileComponent = /** @class */ (function () {
-                function ProfileComponent(route, articleService, pagerService, profileService, authService, router) {
-                    this.route = route;
-                    this.articleService = articleService;
-                    this.pagerService = pagerService;
-                    this.profileService = profileService;
-                    this.authService = authService;
-                    this.router = router;
-                    this.check = false;
-                    this.imgNull = 'https://static.productionready.io/images/smiley-cyrus.jpg';
-                    this.tab = 1;
-                    this.page = 0;
-                    // phan trang
-                    this.pager = {};
-                }
-                ProfileComponent.prototype.ngOnInit = function () {
-                    var _this = this;
-                    this.route.params.subscribe(function (param) {
-                        if (param.userName == localStorage.getItem('name')) {
-                            _this.check = true;
-                        }
-                        else {
-                            _this.check = false;
-                        }
-                        _this.name = param.userName;
-                        _this.articleService.getYourArticle(_this.name, _this.check, 0, '5').subscribe(function (data) {
-                            _this.listArticle = data['articles'];
-                            _this.total1 = data['articlesCount'];
-                            _this.setPage(1);
-                        });
-                        _this.profileService.getProfile(_this.name).subscribe(function (data) {
-                            _this.dataProfile = data['profile'];
-                        });
-                    });
-                };
-                ProfileComponent.prototype.clickFavoritedArticle = function () {
-                    var _this = this;
-                    this.tab = 2;
-                    this.articleService.getYourArticlefavorite(this.name, this.check, 0).subscribe(function (data) {
-                        _this.listArticle = data['articles'];
-                        _this.total2 = data['articlesCount'];
-                        _this.setPage(1);
-                    });
-                };
-                ProfileComponent.prototype.clickMyArticle = function () {
-                    var _this = this;
-                    this.tab = 1;
-                    this.articleService.getYourArticle(this.name, this.check, 0, '5').subscribe(function (data) {
-                        _this.listArticle = data['articles'];
-                        _this.total1 = data['articlesCount'];
-                        _this.setPage(1);
-                    });
-                };
-                //Follow User
-                ProfileComponent.prototype.clickFollowUser = function (userName, following) {
-                    var _this = this;
-                    if (localStorage.getItem('token')) {
-                        if (!following) {
-                            this.articleService.postFollowUser(userName).subscribe(function (data) {
-                                _this.dataProfile = data['profile'];
-                            });
-                        }
-                        else {
-                            this.articleService.deleteFollowUser(userName).subscribe(function (data) {
-                                _this.dataProfile = data['profile'];
-                            });
-                        }
-                    }
-                    else {
-                        this.router.navigate(['login']);
-                    }
-                };
-                //phan trang
-                ProfileComponent.prototype.getDataPage = function (offset) {
-                    var _this = this;
-                    var offSetPage = offset * 5;
-                    switch (this.tab) {
-                        case 1:
-                            this.articleService.getYourArticle(this.name, this.check, offSetPage, '5').subscribe(function (data) {
-                                _this.listArticle = data['articles'];
-                                _this.total1 = data['articlesCount'];
-                            });
-                            break;
-                        case 2:
-                            this.articleService.getYourArticlefavorite(this.name, this.check, offSetPage).subscribe(function (data) {
-                                _this.listArticle = data['articles'];
-                                _this.total2 = data['articlesCount'];
-                            });
-                            break;
-                    }
-                };
-                ProfileComponent.prototype.setPage = function (page) {
-                    if (page < 1 || page > this.pager.totalPages) {
-                        return;
-                    }
-                    this.page = page;
-                    // get pager object from service
-                    switch (this.tab) {
-                        case 1:
-                            this.pager = this.pagerService.getPager(this.total1, page, 5);
-                            this.getDataPage(page - 1);
-                            break;
-                        case 2:
-                            this.pager = this.pagerService.getPager(this.total2, page, 5);
-                            this.getDataPage(page - 1);
-                            break;
-                    }
-                };
-                ProfileComponent.prototype.toggleFavorite = function (slug, favorited, i) {
-                    var _this = this;
-                    if (this.authService.isLogin) {
-                        if (favorited == false) {
-                            this.articleService.postFavoriteArticle(slug).subscribe(function (data) {
-                                _this.listArticle[i] = data['article'];
-                            });
-                        }
-                        else if (favorited == true) {
-                            this.articleService.deleteFavoriteArticle(slug).subscribe(function (data) {
-                                _this.listArticle[i] = data['article'];
-                                _this.setPage(_this.page);
-                            });
-                        }
-                    }
-                    else {
-                        this.router.navigate(['login']);
-                    }
-                };
-                return ProfileComponent;
-            }());
-            ProfileComponent.ctorParameters = function () { return [
-                { type: _angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"] },
-                { type: _services_article_service__WEBPACK_IMPORTED_MODULE_3__["ArticleService"] },
-                { type: _services_paper_service__WEBPACK_IMPORTED_MODULE_5__["PaperService"] },
-                { type: _services_profile_service__WEBPACK_IMPORTED_MODULE_4__["ProfileService"] },
-                { type: _services_auth_service__WEBPACK_IMPORTED_MODULE_6__["AuthService"] },
-                { type: _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"] }
-            ]; };
-            ProfileComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-                Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
-                    selector: 'app-profile',
-                    template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! raw-loader!./profile.component.html */ "./node_modules/raw-loader/dist/cjs.js!./src/app/profile/profile.component.html")).default,
-                    styles: [tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! ./profile.component.css */ "./src/app/profile/profile.component.css")).default]
-                })
-            ], ProfileComponent);
-            /***/ 
-        }),
-        /***/ "./src/app/register/register.component.css": 
-        /*!*************************************************!*\
-          !*** ./src/app/register/register.component.css ***!
-          \*************************************************/
-        /*! exports provided: default */
-        /***/ (function (module, __webpack_exports__, __webpack_require__) {
-            "use strict";
-            __webpack_require__.r(__webpack_exports__);
-            /* harmony default export */ __webpack_exports__["default"] = ("\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL3JlZ2lzdGVyL3JlZ2lzdGVyLmNvbXBvbmVudC5jc3MifQ== */");
-            /***/ 
-        }),
-        /***/ "./src/app/register/register.component.ts": 
-        /*!************************************************!*\
-          !*** ./src/app/register/register.component.ts ***!
-          \************************************************/
-        /*! exports provided: RegisterComponent */
-        /***/ (function (module, __webpack_exports__, __webpack_require__) {
-            "use strict";
-            __webpack_require__.r(__webpack_exports__);
-            /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RegisterComponent", function () { return RegisterComponent; });
-            /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-            /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
-            /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm2015/forms.js");
-            /* harmony import */ var _services_register_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../services/register.service */ "./src/app/services/register.service.ts");
-            /* harmony import */ var _services_auth_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../services/auth.service */ "./src/app/services/auth.service.ts");
-            var RegisterComponent = /** @class */ (function () {
-                function RegisterComponent(fb, registerService, authService) {
-                    this.fb = fb;
-                    this.registerService = registerService;
-                    this.authService = authService;
-                    this.formUser = fb.group({
-                        username: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
-                        email: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
-                        password: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required]
-                    });
-                }
-                RegisterComponent.prototype.ngOnInit = function () {
-                };
-                RegisterComponent.prototype.singup = function () {
-                    var _this = this;
-                    console.log(this.formUser.value);
-                    this.registerService.postUser(this.formUser.value).subscribe(function (data) {
-                        _this.authService.loginSuccess(data);
-                    }, function (err) {
-                        _this.errregister = _this.registerService.getError(err);
-                        console.log(_this.errregister);
-                    });
-                };
-                return RegisterComponent;
-            }());
-            RegisterComponent.ctorParameters = function () { return [
-                { type: _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormBuilder"] },
-                { type: _services_register_service__WEBPACK_IMPORTED_MODULE_3__["RegisterService"] },
-                { type: _services_auth_service__WEBPACK_IMPORTED_MODULE_4__["AuthService"] }
-            ]; };
-            RegisterComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-                Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
-                    selector: 'app-register',
-                    template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! raw-loader!./register.component.html */ "./node_modules/raw-loader/dist/cjs.js!./src/app/register/register.component.html")).default,
-                    styles: [tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! ./register.component.css */ "./src/app/register/register.component.css")).default]
-                })
-            ], RegisterComponent);
-            /***/ 
-        }),
-        /***/ "./src/app/services/article.service.ts": 
-        /*!*********************************************!*\
-          !*** ./src/app/services/article.service.ts ***!
-          \*********************************************/
-        /*! exports provided: ArticleService */
-        /***/ (function (module, __webpack_exports__, __webpack_require__) {
-            "use strict";
-            __webpack_require__.r(__webpack_exports__);
-            /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ArticleService", function () { return ArticleService; });
-            /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-            /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
-            /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm2015/http.js");
-            var ArticleService = /** @class */ (function () {
-                function ArticleService(http) {
-                    this.http = http;
-                }
-                ArticleService.prototype.setToken = function () {
-                    this.headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]({
-                        'Authorization': "Token " + localStorage.getItem("token")
-                    });
-                };
-                ArticleService.prototype.getGlobalArticle = function (isLogin, offset) {
-                    if (isLogin) {
-                        this.setToken();
-                        return this.http.get('https://conduit.productionready.io/api/articles', {
-                            params: {
-                                limit: '10',
-                                offset: offset,
-                            },
-                            headers: this.headers,
-                        });
-                    }
-                    return this.http.get('https://conduit.productionready.io/api/articles', {
-                        params: {
-                            limit: '10',
-                            offset: offset
-                        }
-                    });
-                };
-                ArticleService.prototype.getTabs = function () {
-                    return this.http.get('https://conduit.productionready.io/api/tags');
-                };
-                ArticleService.prototype.getYourArticle = function (name, isLogin, offset, limit) {
-                    if (limit === void 0) { limit = '10'; }
-                    if (isLogin) {
-                        this.setToken();
-                        return this.http.get('https://conduit.productionready.io/api/articles', {
-                            params: {
-                                limit: limit,
-                                offset: offset,
-                                author: name,
-                            },
-                            headers: this.headers
-                        });
-                    }
-                    return this.http.get('https://conduit.productionready.io/api/articles', {
-                        params: {
-                            limit: limit,
-                            offset: offset,
-                            author: name,
-                        }
-                    });
-                };
-                ArticleService.prototype.getHomeArticle = function (offset, limit) {
-                    if (limit === void 0) { limit = '10'; }
-                    this.setToken();
-                    return this.http.get('https://conduit.productionready.io/api/articles/feed', {
-                        params: {
-                            limit: limit,
-                            offset: offset,
-                        },
-                        headers: this.headers
-                    });
-                };
-                ArticleService.prototype.getYourArticlefavorite = function (name, isLogin, offset) {
-                    if (isLogin) {
-                        this.setToken();
-                        return this.http.get('https://conduit.productionready.io/api/articles', {
-                            params: {
-                                limit: '5',
-                                offset: offset,
-                                favorited: name
-                            },
-                            headers: this.headers
-                        });
-                    }
-                    return this.http.get('https://conduit.productionready.io/api/articles', {
-                        params: {
-                            limit: '5',
-                            offset: offset,
-                            favorited: name
-                        }
-                    });
-                };
-                ArticleService.prototype.getTabArticle = function (tab, isLogin, offset) {
-                    if (isLogin) {
-                        this.setToken();
-                        return this.http.get("https://conduit.productionready.io/api/articles", {
-                            params: {
-                                limit: '10',
-                                offset: offset,
-                                tag: tab
-                            },
-                            headers: this.headers
-                        });
-                    }
-                    return this.http.get("https://conduit.productionready.io/api/articles", {
-                        params: {
-                            limit: '10',
-                            offset: '0',
-                            tag: tab
-                        }
-                    });
-                };
-                ArticleService.prototype.postFavoriteArticle = function (slug) {
-                    this.setToken();
-                    return this.http.post("https://conduit.productionready.io/api/articles/" + slug + "/favorite", { name: 'abc' }, {
-                        headers: this.headers
-                    });
-                };
-                ArticleService.prototype.deleteFavoriteArticle = function (slug) {
-                    this.setToken();
-                    return this.http.delete("https://conduit.productionready.io/api/articles/" + slug + "/favorite", {
-                        headers: this.headers
-                    });
-                };
-                // Follow user
-                ArticleService.prototype.postFollowUser = function (userName) {
-                    this.setToken();
-                    return this.http.post("https://conduit.productionready.io/api/profiles/" + userName + "/follow", { name: 'abc' }, {
-                        headers: this.headers
-                    });
-                };
-                ArticleService.prototype.deleteFollowUser = function (userName) {
-                    this.setToken();
-                    return this.http.delete("https://conduit.productionready.io/api/profiles/" + userName + "/follow", {
-                        headers: this.headers
-                    });
-                };
-                // Article detail
-                ArticleService.prototype.getArticleDetail = function (slug) {
-                    this.setToken();
-                    if (localStorage.getItem('token')) {
-                        return this.http.get("https://conduit.productionready.io/api/articles/" + slug, {
-                            headers: this.headers
-                        });
-                    }
-                    return this.http.get("https://conduit.productionready.io/api/articles/" + slug);
-                };
-                // Create Article
-                ArticleService.prototype.postNewArticle = function (article) {
-                    this.setToken();
-                    return this.http.post('https://conduit.productionready.io/api/articles', { article: article }, {
-                        headers: this.headers
-                    });
-                };
-                ArticleService.prototype.updateArticle = function (article, slug) {
-                    this.setToken();
-                    return this.http.put("https://conduit.productionready.io/api/articles/" + slug, { article: article }, {
-                        headers: this.headers
-                    });
-                };
-                ArticleService.prototype.deleteArticle = function (slug) {
-                    this.setToken();
-                    return this.http.delete("https://conduit.productionready.io/api/articles/" + slug, {
-                        headers: this.headers
-                    });
-                };
-                // comment
-                ArticleService.prototype.getCommentArticle = function (slug) {
-                    return this.http.get("https://conduit.productionready.io/api/articles/" + slug + "/comments");
-                };
-                ArticleService.prototype.postCommentArticle = function (slug, comment) {
-                    this.setToken();
-                    return this.http.post("https://conduit.productionready.io/api/articles/" + slug + "/comments", {
-                        comment: comment
-                    }, {
-                        headers: this.headers
-                    });
-                };
-                ArticleService.prototype.deleteCommentArticle = function (slug, id) {
-                    this.setToken();
-                    if (localStorage.getItem('token')) {
-                        return this.http.delete("https://conduit.productionready.io/api/articles/" + slug + "/comments/" + id, {
-                            headers: this.headers
-                        });
-                    }
-                };
-                return ArticleService;
-            }());
-            ArticleService.ctorParameters = function () { return [
-                { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"] }
-            ]; };
-            ArticleService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-                Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
-                    providedIn: 'root'
-                })
-            ], ArticleService);
-            /***/ 
-        }),
-        /***/ "./src/app/services/auth-guast.guard.ts": 
-        /*!**********************************************!*\
-          !*** ./src/app/services/auth-guast.guard.ts ***!
-          \**********************************************/
-        /*! exports provided: AuthGuastGuard */
-        /***/ (function (module, __webpack_exports__, __webpack_require__) {
-            "use strict";
-            __webpack_require__.r(__webpack_exports__);
-            /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AuthGuastGuard", function () { return AuthGuastGuard; });
-            /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-            /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
-            /* harmony import */ var _auth_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./auth.service */ "./src/app/services/auth.service.ts");
-            var AuthGuastGuard = /** @class */ (function () {
-                function AuthGuastGuard(authService) {
-                    this.authService = authService;
-                }
-                AuthGuastGuard.prototype.canActivate = function (next, state) {
-                    return this.authService.checkLoginNavigate();
-                };
-                return AuthGuastGuard;
-            }());
-            AuthGuastGuard.ctorParameters = function () { return [
-                { type: _auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"] }
-            ]; };
-            AuthGuastGuard = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-                Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
-                    providedIn: 'root'
-                })
-            ], AuthGuastGuard);
-            /***/ 
-        }),
-        /***/ "./src/app/services/auth.service.ts": 
-        /*!******************************************!*\
-          !*** ./src/app/services/auth.service.ts ***!
-          \******************************************/
-        /*! exports provided: AuthService */
-        /***/ (function (module, __webpack_exports__, __webpack_require__) {
-            "use strict";
-            __webpack_require__.r(__webpack_exports__);
-            /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AuthService", function () { return AuthService; });
-            /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-            /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
-            /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm2015/http.js");
-            /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
-            var AuthService = /** @class */ (function () {
-                function AuthService(http, router) {
-                    this.http = http;
-                    this.router = router;
-                    this.isLogin = false;
-                    this.name = '';
-                    if (localStorage.getItem('token')) {
-                        this.isLogin = true;
-                        this.name = localStorage.getItem('name');
-                    }
-                }
-                AuthService.prototype.login = function (user) {
-                    return this.http.post('https://conduit.productionready.io/api/users/login', { user: user });
-                };
-                AuthService.prototype.loginSuccess = function (userData) {
-                    this.isLogin = true;
-                    this.name = userData['user'].username;
-                    localStorage.setItem('token', userData['user'].token);
-                    localStorage.setItem('name', userData['user'].username);
-                    localStorage.setItem('image', userData['user'].image);
-                    localStorage.setItem('isLogin', JSON.stringify(this.isLogin));
-                    this.router.navigate(['']);
-                };
-                AuthService.prototype.logOut = function () {
-                    this.isLogin = false;
-                    this.name = '';
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('name');
-                    localStorage.removeItem('isLogin');
-                    this.router.navigate(['login']);
-                };
-                AuthService.prototype.checkLoginNavigate = function () {
-                    if (!this.isLogin) {
-                        this.router.navigateByUrl("/login");
-                    }
-                    return this.isLogin;
-                };
-                return AuthService;
-            }());
-            AuthService.ctorParameters = function () { return [
-                { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"] },
-                { type: _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"] }
-            ]; };
-            AuthService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-                Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
-                    providedIn: 'root'
-                })
-            ], AuthService);
-            /***/ 
-        }),
-        /***/ "./src/app/services/paper.service.ts": 
-        /*!*******************************************!*\
-          !*** ./src/app/services/paper.service.ts ***!
-          \*******************************************/
-        /*! exports provided: PaperService */
-        /***/ (function (module, __webpack_exports__, __webpack_require__) {
-            "use strict";
-            __webpack_require__.r(__webpack_exports__);
-            /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PaperService", function () { return PaperService; });
-            /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-            /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
-            var PaperService = /** @class */ (function () {
-                function PaperService() {
-                }
-                PaperService.prototype.range = function (start, end) {
+                AppService.prototype.range = function (start, end) {
                     var ans = [];
                     for (var i = start; i <= end; i++) {
                         ans.push(i);
                     }
                     return ans;
                 };
-                PaperService.prototype.getPager = function (totalItems, currentPage, pageSize) {
+                AppService.prototype.getPager = function (totalItems, currentPage, pageSize) {
                     if (currentPage === void 0) { currentPage = 1; }
                     if (pageSize === void 0) { pageSize = 10; }
                     // calculate total pages
@@ -1634,334 +631,974 @@
                         pages: pages
                     };
                 };
-                return PaperService;
+                return AppService;
             }());
-            PaperService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+            AppService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
                 Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
                     providedIn: 'root'
                 })
-            ], PaperService);
+            ], AppService);
             /***/ 
         }),
-        /***/ "./src/app/services/profile.service.ts": 
-        /*!*********************************************!*\
-          !*** ./src/app/services/profile.service.ts ***!
-          \*********************************************/
-        /*! exports provided: ProfileService */
+        /***/ "./src/app/articleModule/article.service.ts": 
+        /*!**************************************************!*\
+          !*** ./src/app/articleModule/article.service.ts ***!
+          \**************************************************/
+        /*! exports provided: ArticleService */
         /***/ (function (module, __webpack_exports__, __webpack_require__) {
             "use strict";
             __webpack_require__.r(__webpack_exports__);
-            /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ProfileService", function () { return ProfileService; });
+            /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ArticleService", function () { return ArticleService; });
             /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
             /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
             /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm2015/http.js");
-            var ProfileService = /** @class */ (function () {
-                function ProfileService(http) {
+            var ArticleService = /** @class */ (function () {
+                function ArticleService(http) {
                     this.http = http;
+                    this.urlHome = 'https://conduit.productionready.io/api/';
                 }
-                ProfileService.prototype.getProfile = function (name) {
-                    if (localStorage.getItem('name')) {
-                        return this.http.get("https://conduit.productionready.io/api/profiles/" + name, {
-                            headers: {
-                                'Authorization': "Token " + localStorage.getItem("token")
-                            }
+                ArticleService.prototype.setToken = function () {
+                    this.headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]({
+                        'Authorization': "Token " + localStorage.getItem("token")
+                    });
+                };
+                ArticleService.prototype.getYourArticle = function (offset, limit) {
+                    if (limit === void 0) { limit = '10'; }
+                    this.setToken();
+                    return this.http.get(this.urlHome + 'articles/feed', {
+                        params: {
+                            limit: limit,
+                            offset: offset,
+                        },
+                        headers: this.headers
+                    });
+                };
+                ArticleService.prototype.getGlobalArticle = function (isLogin, offset) {
+                    if (isLogin) {
+                        this.setToken();
+                        return this.http.get(this.urlHome + 'articles', {
+                            params: {
+                                limit: '10',
+                                offset: offset,
+                            },
+                            headers: this.headers,
                         });
                     }
-                    return this.http.get("https://conduit.productionready.io/api/profiles/" + name);
-                };
-                return ProfileService;
-            }());
-            ProfileService.ctorParameters = function () { return [
-                { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"] }
-            ]; };
-            ProfileService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-                Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
-                    providedIn: 'root'
-                })
-            ], ProfileService);
-            /***/ 
-        }),
-        /***/ "./src/app/services/register.service.ts": 
-        /*!**********************************************!*\
-          !*** ./src/app/services/register.service.ts ***!
-          \**********************************************/
-        /*! exports provided: RegisterService */
-        /***/ (function (module, __webpack_exports__, __webpack_require__) {
-            "use strict";
-            __webpack_require__.r(__webpack_exports__);
-            /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RegisterService", function () { return RegisterService; });
-            /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-            /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
-            /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm2015/http.js");
-            var RegisterService = /** @class */ (function () {
-                function RegisterService(http) {
-                    this.http = http;
-                }
-                RegisterService.prototype.postUser = function (user) {
-                    return this.http.post('https://conduit.productionready.io/api/users', { user: user });
-                };
-                RegisterService.prototype.getError = function (err) {
-                    var error = err.error.errors;
-                    var key = Object.keys(error);
-                    var mes = [];
-                    key.forEach(function (ele) {
-                        mes.push(ele + ' ' + error[ele]);
-                    });
-                    return mes;
-                };
-                return RegisterService;
-            }());
-            RegisterService.ctorParameters = function () { return [
-                { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"] }
-            ]; };
-            RegisterService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-                Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
-                    providedIn: 'root'
-                })
-            ], RegisterService);
-            /***/ 
-        }),
-        /***/ "./src/app/services/setting.service.ts": 
-        /*!*********************************************!*\
-          !*** ./src/app/services/setting.service.ts ***!
-          \*********************************************/
-        /*! exports provided: SettingService */
-        /***/ (function (module, __webpack_exports__, __webpack_require__) {
-            "use strict";
-            __webpack_require__.r(__webpack_exports__);
-            /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SettingService", function () { return SettingService; });
-            /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-            /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
-            /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm2015/http.js");
-            var SettingService = /** @class */ (function () {
-                function SettingService(http) {
-                    this.http = http;
-                }
-                SettingService.prototype.getUser = function () {
-                    return this.http.get('https://conduit.productionready.io/api/user', {
-                        headers: {
-                            'Authorization': "Token " + localStorage.getItem("token")
+                    return this.http.get(this.urlHome + 'articles', {
+                        params: {
+                            limit: '10',
+                            offset: offset
                         }
                     });
                 };
-                SettingService.prototype.updateSetting = function (user) {
-                    return this.http.put('https://conduit.productionready.io/api/user', {
-                        user: user,
+                ArticleService.prototype.getTabs = function () {
+                    return this.http.get(this.urlHome + 'tags');
+                };
+                ArticleService.prototype.getTabArticle = function (tab, isLogin, offset) {
+                    if (isLogin) {
+                        this.setToken();
+                        return this.http.get(this.urlHome + "articles", {
+                            params: {
+                                limit: '10',
+                                offset: offset,
+                                tag: tab
+                            },
+                            headers: this.headers
+                        });
+                    }
+                    return this.http.get(this.urlHome + "articles", {
+                        params: {
+                            limit: '10',
+                            offset: '0',
+                            tag: tab
+                        }
+                    });
+                };
+                ArticleService.prototype.getMyArticle = function (name, isLogin, offset, limit) {
+                    if (limit === void 0) { limit = '10'; }
+                    if (isLogin) {
+                        this.setToken();
+                        return this.http.get(this.urlHome + 'articles', {
+                            params: {
+                                limit: limit,
+                                offset: offset,
+                                author: name,
+                            },
+                            headers: this.headers
+                        });
+                    }
+                    return this.http.get(this.urlHome + 'articles', {
+                        params: {
+                            limit: limit,
+                            offset: offset,
+                            author: name,
+                        }
+                    });
+                };
+                ArticleService.prototype.getYourArticlefavorite = function (name, isLogin, offset) {
+                    if (isLogin) {
+                        this.setToken();
+                        return this.http.get(this.urlHome + 'articles', {
+                            params: {
+                                limit: '5',
+                                offset: offset,
+                                favorited: name
+                            },
+                            headers: this.headers
+                        });
+                    }
+                    return this.http.get(this.urlHome + 'articles', {
+                        params: {
+                            limit: '5',
+                            offset: offset,
+                            favorited: name
+                        }
+                    });
+                };
+                ArticleService.prototype.postFavoriteArticle = function (slug) {
+                    this.setToken();
+                    return this.http.post(this.urlHome + ("articles/" + slug + "/favorite"), { name: 'abc' }, {
+                        headers: this.headers
+                    });
+                };
+                ArticleService.prototype.deleteFavoriteArticle = function (slug) {
+                    this.setToken();
+                    return this.http.delete(this.urlHome + ("articles/" + slug + "/favorite"), {
+                        headers: this.headers
+                    });
+                };
+                ArticleService.prototype.postFollowUser = function (userName) {
+                    this.setToken();
+                    return this.http.post(this.urlHome + ("profiles/" + userName + "/follow"), { name: 'abc' }, {
+                        headers: this.headers
+                    });
+                };
+                ArticleService.prototype.deleteFollowUser = function (userName) {
+                    this.setToken();
+                    return this.http.delete(this.urlHome + ("profiles/" + userName + "/follow"), {
+                        headers: this.headers
+                    });
+                };
+                ArticleService.prototype.getArticleDetail = function (slug) {
+                    this.setToken();
+                    if (localStorage.getItem('token')) {
+                        return this.http.get(this.urlHome + ("articles/" + slug), {
+                            headers: this.headers
+                        });
+                    }
+                    return this.http.get(this.urlHome + ("articles/" + slug));
+                };
+                // Create Article
+                ArticleService.prototype.postNewArticle = function (article) {
+                    this.setToken();
+                    return this.http.post(this.urlHome + 'articles', { article: article }, {
+                        headers: this.headers
+                    });
+                };
+                ArticleService.prototype.updateArticle = function (article, slug) {
+                    this.setToken();
+                    return this.http.put(this.urlHome + ("articles/" + slug), { article: article }, {
+                        headers: this.headers
+                    });
+                };
+                ArticleService.prototype.deleteArticle = function (slug) {
+                    this.setToken();
+                    return this.http.delete(this.urlHome + ("articles/" + slug), {
+                        headers: this.headers
+                    });
+                };
+                ArticleService.prototype.getCommentArticle = function (slug) {
+                    return this.http.get(this.urlHome + ("articles/" + slug + "/comments"));
+                };
+                ArticleService.prototype.postCommentArticle = function (slug, comment) {
+                    this.setToken();
+                    return this.http.post(this.urlHome + ("articles/" + slug + "/comments"), {
+                        comment: comment
                     }, {
-                        headers: {
-                            'Authorization': "Token " + localStorage.getItem("token")
-                        }
+                        headers: this.headers
                     });
                 };
-                return SettingService;
+                ArticleService.prototype.deleteCommentArticle = function (slug, id) {
+                    this.setToken();
+                    if (localStorage.getItem('token')) {
+                        return this.http.delete(this.urlHome + ("articles/" + slug + "/comments/" + id), {
+                            headers: this.headers
+                        });
+                    }
+                };
+                return ArticleService;
             }());
-            SettingService.ctorParameters = function () { return [
+            ArticleService.ctorParameters = function () { return [
                 { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"] }
             ]; };
-            SettingService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+            ArticleService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
                 Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
                     providedIn: 'root'
                 })
-            ], SettingService);
+            ], ArticleService);
             /***/ 
         }),
-        /***/ "./src/app/setting/setting.component.css": 
-        /*!***********************************************!*\
-          !*** ./src/app/setting/setting.component.css ***!
-          \***********************************************/
+        /***/ "./src/app/authModule/auth.module.ts": 
+        /*!*******************************************!*\
+          !*** ./src/app/authModule/auth.module.ts ***!
+          \*******************************************/
+        /*! exports provided: AuthModule */
+        /***/ (function (module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            __webpack_require__.r(__webpack_exports__);
+            /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AuthModule", function () { return AuthModule; });
+            /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+            /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+            /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm2015/common.js");
+            /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm2015/forms.js");
+            /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm2015/http.js");
+            /* harmony import */ var _login_login_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./login/login.component */ "./src/app/authModule/login/login.component.ts");
+            /* harmony import */ var _register_register_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./register/register.component */ "./src/app/authModule/register/register.component.ts");
+            /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
+            /* harmony import */ var _shared_shared_module__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../shared/shared.module */ "./src/app/shared/shared.module.ts");
+            ;
+            var authRoutes = [
+                { path: 'login', component: _login_login_component__WEBPACK_IMPORTED_MODULE_5__["LoginComponent"] },
+                { path: 'register', component: _register_register_component__WEBPACK_IMPORTED_MODULE_6__["RegisterComponent"] }
+            ];
+            var AuthModule = /** @class */ (function () {
+                function AuthModule() {
+                }
+                return AuthModule;
+            }());
+            AuthModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+                Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
+                    declarations: [
+                        _login_login_component__WEBPACK_IMPORTED_MODULE_5__["LoginComponent"],
+                        _register_register_component__WEBPACK_IMPORTED_MODULE_6__["RegisterComponent"],
+                    ],
+                    imports: [
+                        _angular_common__WEBPACK_IMPORTED_MODULE_2__["CommonModule"],
+                        _angular_forms__WEBPACK_IMPORTED_MODULE_3__["ReactiveFormsModule"],
+                        _angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormsModule"],
+                        _angular_common_http__WEBPACK_IMPORTED_MODULE_4__["HttpClientModule"],
+                        _shared_shared_module__WEBPACK_IMPORTED_MODULE_8__["SharedModule"],
+                        _angular_router__WEBPACK_IMPORTED_MODULE_7__["RouterModule"].forChild(authRoutes),
+                    ]
+                })
+            ], AuthModule);
+            /***/ 
+        }),
+        /***/ "./src/app/authModule/auth.service.ts": 
+        /*!********************************************!*\
+          !*** ./src/app/authModule/auth.service.ts ***!
+          \********************************************/
+        /*! exports provided: AuthService */
+        /***/ (function (module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            __webpack_require__.r(__webpack_exports__);
+            /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AuthService", function () { return AuthService; });
+            /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+            /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+            /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm2015/http.js");
+            /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm2015/index.js");
+            /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
+            var AuthService = /** @class */ (function () {
+                function AuthService(http, router) {
+                    this.http = http;
+                    this.router = router;
+                    this.isLogin = false;
+                    this.subject = new rxjs__WEBPACK_IMPORTED_MODULE_3__["Subject"]();
+                    this.name = '';
+                    this.urlImage = 'https://static.productionready.io/images/smiley-cyrus.jpg';
+                    this.url = 'https://conduit.productionready.io/api/users';
+                    if (localStorage.getItem('token')) {
+                        this.isLogin = true;
+                    }
+                }
+                AuthService.prototype.login = function (user) {
+                    return this.http.post(this.url + '/login', { user: user });
+                };
+                AuthService.prototype.loginSuccess = function (userData) {
+                    this.isLogin = true;
+                    this.name = userData['user'].username;
+                    this.urlImage = userData['user'].image;
+                    localStorage.setItem('token', userData['user'].token);
+                    localStorage.setItem('name', userData['user'].username);
+                    localStorage.setItem('image', userData['user'].image);
+                    this.subject.next({ isLogin: this.isLogin, username: this.name, urlImage: this.urlImage });
+                    this.router.navigate(['']);
+                };
+                AuthService.prototype.logOut = function () {
+                    this.isLogin = false;
+                    this.name = '';
+                    this.urlImage = 'https://static.productionready.io/images/smiley-cyrus.jpg';
+                    this.subject.next({ isLogin: this.isLogin, username: this.name, urlImage: this.urlImage });
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('name');
+                    localStorage.removeItem('isLogin');
+                    localStorage.removeItem('image');
+                    this.router.navigate(['login']);
+                };
+                AuthService.prototype.checkLoginNavigate = function () {
+                    if (!this.isLogin) {
+                        this.router.navigateByUrl("");
+                    }
+                    return this.isLogin;
+                };
+                AuthService.prototype.postUser = function (user) {
+                    return this.http.post(this.url, { user: user });
+                };
+                return AuthService;
+            }());
+            AuthService.ctorParameters = function () { return [
+                { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"] },
+                { type: _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"] }
+            ]; };
+            AuthService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+                Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
+                    providedIn: 'root'
+                })
+            ], AuthService);
+            /***/ 
+        }),
+        /***/ "./src/app/authModule/login/login.component.css": 
+        /*!******************************************************!*\
+          !*** ./src/app/authModule/login/login.component.css ***!
+          \******************************************************/
         /*! exports provided: default */
         /***/ (function (module, __webpack_exports__, __webpack_require__) {
             "use strict";
             __webpack_require__.r(__webpack_exports__);
-            /* harmony default export */ __webpack_exports__["default"] = ("\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL3NldHRpbmcvc2V0dGluZy5jb21wb25lbnQuY3NzIn0= */");
+            /* harmony default export */ __webpack_exports__["default"] = ("\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2F1dGhNb2R1bGUvbG9naW4vbG9naW4uY29tcG9uZW50LmNzcyJ9 */");
             /***/ 
         }),
-        /***/ "./src/app/setting/setting.component.ts": 
-        /*!**********************************************!*\
-          !*** ./src/app/setting/setting.component.ts ***!
-          \**********************************************/
-        /*! exports provided: SettingComponent */
+        /***/ "./src/app/authModule/login/login.component.ts": 
+        /*!*****************************************************!*\
+          !*** ./src/app/authModule/login/login.component.ts ***!
+          \*****************************************************/
+        /*! exports provided: LoginComponent */
         /***/ (function (module, __webpack_exports__, __webpack_require__) {
             "use strict";
             __webpack_require__.r(__webpack_exports__);
-            /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SettingComponent", function () { return SettingComponent; });
+            /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoginComponent", function () { return LoginComponent; });
             /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
             /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
             /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm2015/forms.js");
-            /* harmony import */ var _services_setting_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../services/setting.service */ "./src/app/services/setting.service.ts");
-            /* harmony import */ var _services_register_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../services/register.service */ "./src/app/services/register.service.ts");
-            /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
-            var SettingComponent = /** @class */ (function () {
-                function SettingComponent(settingService, router, registerService, fb) {
-                    this.settingService = settingService;
-                    this.router = router;
-                    this.registerService = registerService;
+            /* harmony import */ var _auth_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../auth.service */ "./src/app/authModule/auth.service.ts");
+            /* harmony import */ var src_app_app_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/app.service */ "./src/app/app.service.ts");
+            var LoginComponent = /** @class */ (function () {
+                function LoginComponent(authService, fb, appService) {
+                    this.authService = authService;
                     this.fb = fb;
-                    this.urlNull = 'https://static.productionready.io/images/smiley-cyrus.jpg';
-                    this.errSetting = [];
-                    this.formSetting = this.fb.group({
-                        username: '',
-                        email: '',
-                        password: '',
-                        bio: ''
+                    this.appService = appService;
+                    this.userForm = this.fb.group({
+                        email: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]],
+                        password: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].minLength(7)]]
                     });
                 }
-                SettingComponent.prototype.ngOnInit = function () {
-                    var _this = this;
-                    this.settingService.getUser().subscribe(function (data) {
-                        _this.dataUser = data['user'];
-                        _this.urlNull = _this.dataUser.image ? _this.dataUser.image : '';
-                        console.log(data);
-                        _this.formSetting = _this.fb.group({
-                            username: _this.dataUser.username,
-                            email: _this.dataUser.email,
-                            password: '',
-                            bio: _this.dataUser.bio
-                        });
-                    });
+                LoginComponent.prototype.ngOnInit = function () {
                 };
-                SettingComponent.prototype.onSelectFile = function (event) {
+                LoginComponent.prototype.login = function () {
                     var _this = this;
-                    if (event.target.files && event.target.files[0]) {
-                        var reader = new FileReader();
-                        reader.readAsDataURL(event.target.files[0]); // read file as data url
-                        reader.onload = function (event) {
-                            _this.url = event.target['result'];
-                        };
-                    }
-                };
-                SettingComponent.prototype.updateSetting = function () {
-                    var _this = this;
-                    this.dataSetting = this.formSetting.value;
-                    if (!this.formSetting.controls.password.value) {
-                        delete this.dataSetting.password;
-                    }
-                    console.log(this.url);
-                    if (this.url) {
-                        this.dataSetting['image'] = this.url;
-                        localStorage.setItem('image', this.url);
-                    }
-                    console.log(this.dataSetting);
-                    this.settingService.updateSetting(this.dataSetting).subscribe(function (data) {
-                        console.log(data);
-                        _this.router.navigate(['/', localStorage.getItem('name')]);
+                    this.authService.login(this.userForm.value).subscribe(function (data) {
+                        _this.authService.loginSuccess(data);
                     }, function (err) {
-                        _this.errSetting = _this.registerService.getError(err);
+                        _this.errorResponse = _this.appService.getError(err);
                     });
                 };
-                return SettingComponent;
+                return LoginComponent;
             }());
-            SettingComponent.ctorParameters = function () { return [
-                { type: _services_setting_service__WEBPACK_IMPORTED_MODULE_3__["SettingService"] },
-                { type: _angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"] },
-                { type: _services_register_service__WEBPACK_IMPORTED_MODULE_4__["RegisterService"] },
-                { type: _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormBuilder"] }
+            LoginComponent.ctorParameters = function () { return [
+                { type: _auth_service__WEBPACK_IMPORTED_MODULE_3__["AuthService"] },
+                { type: _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormBuilder"] },
+                { type: src_app_app_service__WEBPACK_IMPORTED_MODULE_4__["AppService"] }
             ]; };
-            SettingComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+            LoginComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
                 Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
-                    selector: 'app-setting',
-                    template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! raw-loader!./setting.component.html */ "./node_modules/raw-loader/dist/cjs.js!./src/app/setting/setting.component.html")).default,
-                    styles: [tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! ./setting.component.css */ "./src/app/setting/setting.component.css")).default]
+                    selector: 'app-login',
+                    template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! raw-loader!./login.component.html */ "./node_modules/raw-loader/dist/cjs.js!./src/app/authModule/login/login.component.html")).default,
+                    styles: [tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! ./login.component.css */ "./src/app/authModule/login/login.component.css")).default]
                 })
-            ], SettingComponent);
+            ], LoginComponent);
             /***/ 
         }),
-        /***/ "./src/app/sign/sign.component.css": 
-        /*!*****************************************!*\
-          !*** ./src/app/sign/sign.component.css ***!
-          \*****************************************/
+        /***/ "./src/app/authModule/register/register.component.css": 
+        /*!************************************************************!*\
+          !*** ./src/app/authModule/register/register.component.css ***!
+          \************************************************************/
         /*! exports provided: default */
         /***/ (function (module, __webpack_exports__, __webpack_require__) {
             "use strict";
             __webpack_require__.r(__webpack_exports__);
-            /* harmony default export */ __webpack_exports__["default"] = ("\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL3NpZ24vc2lnbi5jb21wb25lbnQuY3NzIn0= */");
+            /* harmony default export */ __webpack_exports__["default"] = ("\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2F1dGhNb2R1bGUvcmVnaXN0ZXIvcmVnaXN0ZXIuY29tcG9uZW50LmNzcyJ9 */");
             /***/ 
         }),
-        /***/ "./src/app/sign/sign.component.ts": 
-        /*!****************************************!*\
-          !*** ./src/app/sign/sign.component.ts ***!
-          \****************************************/
-        /*! exports provided: SignComponent */
+        /***/ "./src/app/authModule/register/register.component.ts": 
+        /*!***********************************************************!*\
+          !*** ./src/app/authModule/register/register.component.ts ***!
+          \***********************************************************/
+        /*! exports provided: RegisterComponent */
         /***/ (function (module, __webpack_exports__, __webpack_require__) {
             "use strict";
             __webpack_require__.r(__webpack_exports__);
-            /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SignComponent", function () { return SignComponent; });
+            /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RegisterComponent", function () { return RegisterComponent; });
             /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
             /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
-            /* harmony import */ var _services_auth_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../services/auth.service */ "./src/app/services/auth.service.ts");
-            /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm2015/forms.js");
-            var SignComponent = /** @class */ (function () {
-                function SignComponent(authService, fb) {
-                    this.authService = authService;
+            /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm2015/forms.js");
+            /* harmony import */ var _auth_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../auth.service */ "./src/app/authModule/auth.service.ts");
+            /* harmony import */ var src_app_app_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/app.service */ "./src/app/app.service.ts");
+            var RegisterComponent = /** @class */ (function () {
+                function RegisterComponent(fb, authService, appService) {
                     this.fb = fb;
-                    this.userForm = this.fb.group({
-                        email: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_3__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_3__["Validators"].pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]],
-                        password: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_3__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_3__["Validators"].minLength(6)]]
+                    this.authService = authService;
+                    this.appService = appService;
+                    this.formUser = fb.group({
+                        username: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
+                        email: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]],
+                        password: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].minLength(7)]]
                     });
                 }
-                SignComponent.prototype.ngOnInit = function () {
+                RegisterComponent.prototype.ngOnInit = function () {
                 };
-                SignComponent.prototype.login = function () {
+                RegisterComponent.prototype.singup = function () {
                     var _this = this;
-                    console.log(this.userForm.value);
-                    this.authService.login(this.userForm.value).subscribe(function (data) {
-                        console.log(data);
+                    console.log(this.formUser.value);
+                    this.authService.postUser(this.formUser.value).subscribe(function (data) {
                         _this.authService.loginSuccess(data);
+                        console.log(data);
                     }, function (err) {
-                        _this.errorResponse = "email or password is invalid";
+                        _this.errregister = _this.appService.getError(err);
                     });
                 };
-                return SignComponent;
+                return RegisterComponent;
             }());
-            SignComponent.ctorParameters = function () { return [
-                { type: _services_auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"] },
-                { type: _angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormBuilder"] }
+            RegisterComponent.ctorParameters = function () { return [
+                { type: _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormBuilder"] },
+                { type: _auth_service__WEBPACK_IMPORTED_MODULE_3__["AuthService"] },
+                { type: src_app_app_service__WEBPACK_IMPORTED_MODULE_4__["AppService"] }
             ]; };
-            SignComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+            RegisterComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
                 Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
-                    selector: 'app-sign',
-                    template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! raw-loader!./sign.component.html */ "./node_modules/raw-loader/dist/cjs.js!./src/app/sign/sign.component.html")).default,
-                    styles: [tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! ./sign.component.css */ "./src/app/sign/sign.component.css")).default]
+                    selector: 'app-register',
+                    template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! raw-loader!./register.component.html */ "./node_modules/raw-loader/dist/cjs.js!./src/app/authModule/register/register.component.html")).default,
+                    styles: [tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! ./register.component.css */ "./src/app/authModule/register/register.component.css")).default]
                 })
-            ], SignComponent);
+            ], RegisterComponent);
             /***/ 
         }),
-        /***/ "./src/app/user-detail/user-detail.component.css": 
+        /***/ "./src/app/component/button/favorite-button/favorite-button.component.css": 
+        /*!********************************************************************************!*\
+          !*** ./src/app/component/button/favorite-button/favorite-button.component.css ***!
+          \********************************************************************************/
+        /*! exports provided: default */
+        /***/ (function (module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            __webpack_require__.r(__webpack_exports__);
+            /* harmony default export */ __webpack_exports__["default"] = ("\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudC9idXR0b24vZmF2b3JpdGUtYnV0dG9uL2Zhdm9yaXRlLWJ1dHRvbi5jb21wb25lbnQuY3NzIn0= */");
+            /***/ 
+        }),
+        /***/ "./src/app/component/button/favorite-button/favorite-button.component.ts": 
+        /*!*******************************************************************************!*\
+          !*** ./src/app/component/button/favorite-button/favorite-button.component.ts ***!
+          \*******************************************************************************/
+        /*! exports provided: FavoriteButtonComponent */
+        /***/ (function (module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            __webpack_require__.r(__webpack_exports__);
+            /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FavoriteButtonComponent", function () { return FavoriteButtonComponent; });
+            /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+            /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+            /* harmony import */ var src_app_articleModule_article_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/articleModule/article.service */ "./src/app/articleModule/article.service.ts");
+            /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
+            var FavoriteButtonComponent = /** @class */ (function () {
+                function FavoriteButtonComponent(articleService, router) {
+                    this.articleService = articleService;
+                    this.router = router;
+                    this.changeFavorite = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+                }
+                FavoriteButtonComponent.prototype.ngOnInit = function () {
+                };
+                FavoriteButtonComponent.prototype.onChangeFavorite = function () {
+                    var _this = this;
+                    if (localStorage.getItem('token')) {
+                        if (this.article.favorited == false) {
+                            this.articleService.postFavoriteArticle(this.article.slug).subscribe(function (data) {
+                                _this.changeFavorite.emit(true);
+                            });
+                        }
+                        else if (this.article.favorited == true) {
+                            this.articleService.deleteFavoriteArticle(this.article.slug).subscribe(function (data) {
+                                _this.changeFavorite.emit(false);
+                            });
+                        }
+                    }
+                    else {
+                        this.router.navigate(['login']);
+                    }
+                };
+                return FavoriteButtonComponent;
+            }());
+            FavoriteButtonComponent.ctorParameters = function () { return [
+                { type: src_app_articleModule_article_service__WEBPACK_IMPORTED_MODULE_2__["ArticleService"] },
+                { type: _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"] }
+            ]; };
+            tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+                Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])()
+            ], FavoriteButtonComponent.prototype, "text", void 0);
+            tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+                Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])()
+            ], FavoriteButtonComponent.prototype, "article", void 0);
+            tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+                Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"])()
+            ], FavoriteButtonComponent.prototype, "changeFavorite", void 0);
+            FavoriteButtonComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+                Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+                    selector: 'app-favorite-button',
+                    template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! raw-loader!./favorite-button.component.html */ "./node_modules/raw-loader/dist/cjs.js!./src/app/component/button/favorite-button/favorite-button.component.html")).default,
+                    styles: [tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! ./favorite-button.component.css */ "./src/app/component/button/favorite-button/favorite-button.component.css")).default]
+                })
+            ], FavoriteButtonComponent);
+            /***/ 
+        }),
+        /***/ "./src/app/component/button/following-button/following-button.component.css": 
+        /*!**********************************************************************************!*\
+          !*** ./src/app/component/button/following-button/following-button.component.css ***!
+          \**********************************************************************************/
+        /*! exports provided: default */
+        /***/ (function (module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            __webpack_require__.r(__webpack_exports__);
+            /* harmony default export */ __webpack_exports__["default"] = ("\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudC9idXR0b24vZm9sbG93aW5nLWJ1dHRvbi9mb2xsb3dpbmctYnV0dG9uLmNvbXBvbmVudC5jc3MifQ== */");
+            /***/ 
+        }),
+        /***/ "./src/app/component/button/following-button/following-button.component.ts": 
+        /*!*********************************************************************************!*\
+          !*** ./src/app/component/button/following-button/following-button.component.ts ***!
+          \*********************************************************************************/
+        /*! exports provided: FollowingButtonComponent */
+        /***/ (function (module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            __webpack_require__.r(__webpack_exports__);
+            /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FollowingButtonComponent", function () { return FollowingButtonComponent; });
+            /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+            /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+            /* harmony import */ var src_app_articleModule_article_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/articleModule/article.service */ "./src/app/articleModule/article.service.ts");
+            /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
+            var FollowingButtonComponent = /** @class */ (function () {
+                function FollowingButtonComponent(articleService, router) {
+                    this.articleService = articleService;
+                    this.router = router;
+                    this.changeFollow = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+                }
+                FollowingButtonComponent.prototype.ngOnInit = function () {
+                };
+                FollowingButtonComponent.prototype.clickFollowUser = function () {
+                    var _this = this;
+                    if (localStorage.getItem('token')) {
+                        if (!this.dataProfile.following) {
+                            this.articleService.postFollowUser(this.dataProfile.username).subscribe(function (data) {
+                                _this.changeFollow.emit(true);
+                            });
+                        }
+                        else {
+                            this.articleService.deleteFollowUser(this.dataProfile.username).subscribe(function (data) {
+                                _this.changeFollow.emit(false);
+                            });
+                        }
+                    }
+                    else {
+                        this.router.navigate(['login']);
+                    }
+                };
+                return FollowingButtonComponent;
+            }());
+            FollowingButtonComponent.ctorParameters = function () { return [
+                { type: src_app_articleModule_article_service__WEBPACK_IMPORTED_MODULE_2__["ArticleService"] },
+                { type: _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"] }
+            ]; };
+            tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+                Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])()
+            ], FollowingButtonComponent.prototype, "dataProfile", void 0);
+            tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+                Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"])()
+            ], FollowingButtonComponent.prototype, "changeFollow", void 0);
+            FollowingButtonComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+                Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+                    selector: 'app-following-button',
+                    template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! raw-loader!./following-button.component.html */ "./node_modules/raw-loader/dist/cjs.js!./src/app/component/button/following-button/following-button.component.html")).default,
+                    styles: [tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! ./following-button.component.css */ "./src/app/component/button/following-button/following-button.component.css")).default]
+                })
+            ], FollowingButtonComponent);
+            /***/ 
+        }),
+        /***/ "./src/app/component/footer/footer.component.css": 
         /*!*******************************************************!*\
-          !*** ./src/app/user-detail/user-detail.component.css ***!
+          !*** ./src/app/component/footer/footer.component.css ***!
           \*******************************************************/
         /*! exports provided: default */
         /***/ (function (module, __webpack_exports__, __webpack_require__) {
             "use strict";
             __webpack_require__.r(__webpack_exports__);
-            /* harmony default export */ __webpack_exports__["default"] = ("\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL3VzZXItZGV0YWlsL3VzZXItZGV0YWlsLmNvbXBvbmVudC5jc3MifQ== */");
+            /* harmony default export */ __webpack_exports__["default"] = ("\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudC9mb290ZXIvZm9vdGVyLmNvbXBvbmVudC5jc3MifQ== */");
             /***/ 
         }),
-        /***/ "./src/app/user-detail/user-detail.component.ts": 
+        /***/ "./src/app/component/footer/footer.component.ts": 
         /*!******************************************************!*\
-          !*** ./src/app/user-detail/user-detail.component.ts ***!
+          !*** ./src/app/component/footer/footer.component.ts ***!
           \******************************************************/
-        /*! exports provided: UserDetailComponent */
+        /*! exports provided: FooterComponent */
         /***/ (function (module, __webpack_exports__, __webpack_require__) {
             "use strict";
             __webpack_require__.r(__webpack_exports__);
-            /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UserDetailComponent", function () { return UserDetailComponent; });
+            /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FooterComponent", function () { return FooterComponent; });
             /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
             /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
-            var UserDetailComponent = /** @class */ (function () {
-                function UserDetailComponent() {
+            var FooterComponent = /** @class */ (function () {
+                function FooterComponent() {
                 }
-                UserDetailComponent.prototype.ngOnInit = function () {
+                FooterComponent.prototype.ngOnInit = function () {
                 };
-                return UserDetailComponent;
+                return FooterComponent;
             }());
-            UserDetailComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+            FooterComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
                 Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
-                    selector: 'app-user-detail',
-                    template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! raw-loader!./user-detail.component.html */ "./node_modules/raw-loader/dist/cjs.js!./src/app/user-detail/user-detail.component.html")).default,
-                    styles: [tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! ./user-detail.component.css */ "./src/app/user-detail/user-detail.component.css")).default]
+                    selector: 'app-footer',
+                    template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! raw-loader!./footer.component.html */ "./node_modules/raw-loader/dist/cjs.js!./src/app/component/footer/footer.component.html")).default,
+                    styles: [tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! ./footer.component.css */ "./src/app/component/footer/footer.component.css")).default]
                 })
-            ], UserDetailComponent);
+            ], FooterComponent);
+            /***/ 
+        }),
+        /***/ "./src/app/component/header/header.component.css": 
+        /*!*******************************************************!*\
+          !*** ./src/app/component/header/header.component.css ***!
+          \*******************************************************/
+        /*! exports provided: default */
+        /***/ (function (module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            __webpack_require__.r(__webpack_exports__);
+            /* harmony default export */ __webpack_exports__["default"] = ("\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudC9oZWFkZXIvaGVhZGVyLmNvbXBvbmVudC5jc3MifQ== */");
+            /***/ 
+        }),
+        /***/ "./src/app/component/header/header.component.ts": 
+        /*!******************************************************!*\
+          !*** ./src/app/component/header/header.component.ts ***!
+          \******************************************************/
+        /*! exports provided: HeaderComponent */
+        /***/ (function (module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            __webpack_require__.r(__webpack_exports__);
+            /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HeaderComponent", function () { return HeaderComponent; });
+            /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+            /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+            /* harmony import */ var src_app_authModule_auth_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/authModule/auth.service */ "./src/app/authModule/auth.service.ts");
+            var HeaderComponent = /** @class */ (function () {
+                function HeaderComponent(authService) {
+                    this.authService = authService;
+                    this.userName = '';
+                    this.urlImage = 'https://static.productionready.io/images/smiley-cyrus.jpg';
+                }
+                HeaderComponent.prototype.ngOnInit = function () {
+                    var _this = this;
+                    this.authService.subject.subscribe(function (data) {
+                        _this.isLogin = data['isLogin'];
+                        _this.userName = data['username'];
+                        _this.urlImage = data['urlImage'];
+                    });
+                    if (localStorage.getItem('token')) {
+                        this.isLogin = true;
+                        this.userName = localStorage.getItem('name');
+                        this.urlImage = localStorage.getItem('image');
+                    }
+                };
+                HeaderComponent.prototype.logOut = function () {
+                    this.authService.logOut();
+                };
+                return HeaderComponent;
+            }());
+            HeaderComponent.ctorParameters = function () { return [
+                { type: src_app_authModule_auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"] }
+            ]; };
+            HeaderComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+                Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+                    selector: 'app-header',
+                    template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! raw-loader!./header.component.html */ "./node_modules/raw-loader/dist/cjs.js!./src/app/component/header/header.component.html")).default,
+                    styles: [tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! ./header.component.css */ "./src/app/component/header/header.component.css")).default]
+                })
+            ], HeaderComponent);
+            /***/ 
+        }),
+        /***/ "./src/app/component/listArticle/list-article.component.css": 
+        /*!******************************************************************!*\
+          !*** ./src/app/component/listArticle/list-article.component.css ***!
+          \******************************************************************/
+        /*! exports provided: default */
+        /***/ (function (module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            __webpack_require__.r(__webpack_exports__);
+            /* harmony default export */ __webpack_exports__["default"] = ("\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudC9saXN0QXJ0aWNsZS9saXN0LWFydGljbGUuY29tcG9uZW50LmNzcyJ9 */");
+            /***/ 
+        }),
+        /***/ "./src/app/component/listArticle/list-article.component.ts": 
+        /*!*****************************************************************!*\
+          !*** ./src/app/component/listArticle/list-article.component.ts ***!
+          \*****************************************************************/
+        /*! exports provided: ListArticleComponent */
+        /***/ (function (module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            __webpack_require__.r(__webpack_exports__);
+            /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ListArticleComponent", function () { return ListArticleComponent; });
+            /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+            /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+            var ListArticleComponent = /** @class */ (function () {
+                function ListArticleComponent() {
+                    this.unFavorite = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+                }
+                ListArticleComponent.prototype.ngOnInit = function () {
+                };
+                ListArticleComponent.prototype.emitChangeFavorite = function (favorited, index) {
+                    this.listArticle[index]['favorited'] = favorited;
+                    if (favorited) {
+                        this.listArticle[index]['favoritesCount']++;
+                    }
+                    else {
+                        if (this.tab == 2) {
+                            this.unFavorite.emit();
+                        }
+                        this.listArticle[index]['favoritesCount']--;
+                    }
+                };
+                return ListArticleComponent;
+            }());
+            tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+                Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])()
+            ], ListArticleComponent.prototype, "tab", void 0);
+            tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+                Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])()
+            ], ListArticleComponent.prototype, "listArticle", void 0);
+            tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+                Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"])()
+            ], ListArticleComponent.prototype, "unFavorite", void 0);
+            ListArticleComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+                Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+                    selector: 'app-list-article',
+                    template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! raw-loader!./list-article.component.html */ "./node_modules/raw-loader/dist/cjs.js!./src/app/component/listArticle/list-article.component.html")).default,
+                    styles: [tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! ./list-article.component.css */ "./src/app/component/listArticle/list-article.component.css")).default]
+                })
+            ], ListArticleComponent);
+            /***/ 
+        }),
+        /***/ "./src/app/component/pagination/pagination.component.css": 
+        /*!***************************************************************!*\
+          !*** ./src/app/component/pagination/pagination.component.css ***!
+          \***************************************************************/
+        /*! exports provided: default */
+        /***/ (function (module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            __webpack_require__.r(__webpack_exports__);
+            /* harmony default export */ __webpack_exports__["default"] = ("\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudC9wYWdpbmF0aW9uL3BhZ2luYXRpb24uY29tcG9uZW50LmNzcyJ9 */");
+            /***/ 
+        }),
+        /***/ "./src/app/component/pagination/pagination.component.ts": 
+        /*!**************************************************************!*\
+          !*** ./src/app/component/pagination/pagination.component.ts ***!
+          \**************************************************************/
+        /*! exports provided: PaginationComponent */
+        /***/ (function (module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            __webpack_require__.r(__webpack_exports__);
+            /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PaginationComponent", function () { return PaginationComponent; });
+            /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+            /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+            var PaginationComponent = /** @class */ (function () {
+                function PaginationComponent() {
+                    this.clickPage = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+                }
+                PaginationComponent.prototype.ngOnInit = function () {
+                };
+                PaginationComponent.prototype.setPage = function (page) {
+                    this.clickPage.emit(page);
+                };
+                return PaginationComponent;
+            }());
+            tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+                Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])()
+            ], PaginationComponent.prototype, "pager", void 0);
+            tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+                Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"])()
+            ], PaginationComponent.prototype, "clickPage", void 0);
+            PaginationComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+                Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+                    selector: 'app-pagination',
+                    template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! raw-loader!./pagination.component.html */ "./node_modules/raw-loader/dist/cjs.js!./src/app/component/pagination/pagination.component.html")).default,
+                    styles: [tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! ./pagination.component.css */ "./src/app/component/pagination/pagination.component.css")).default]
+                })
+            ], PaginationComponent);
+            /***/ 
+        }),
+        /***/ "./src/app/homePage/home-page.component.css": 
+        /*!**************************************************!*\
+          !*** ./src/app/homePage/home-page.component.css ***!
+          \**************************************************/
+        /*! exports provided: default */
+        /***/ (function (module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            __webpack_require__.r(__webpack_exports__);
+            /* harmony default export */ __webpack_exports__["default"] = ("\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2hvbWVQYWdlL2hvbWUtcGFnZS5jb21wb25lbnQuY3NzIn0= */");
+            /***/ 
+        }),
+        /***/ "./src/app/homePage/home-page.component.ts": 
+        /*!*************************************************!*\
+          !*** ./src/app/homePage/home-page.component.ts ***!
+          \*************************************************/
+        /*! exports provided: HomePageComponent */
+        /***/ (function (module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            __webpack_require__.r(__webpack_exports__);
+            /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HomePageComponent", function () { return HomePageComponent; });
+            /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+            /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+            /* harmony import */ var _articleModule_article_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../articleModule/article.service */ "./src/app/articleModule/article.service.ts");
+            /* harmony import */ var _authModule_auth_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../authModule/auth.service */ "./src/app/authModule/auth.service.ts");
+            /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
+            /* harmony import */ var _app_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../app.service */ "./src/app/app.service.ts");
+            var HomePageComponent = /** @class */ (function () {
+                function HomePageComponent(articleService, appService, authService, router) {
+                    this.articleService = articleService;
+                    this.appService = appService;
+                    this.authService = authService;
+                    this.router = router;
+                    this.loadingArticle = true;
+                    this.toggleTab = false;
+                    this.tab = 2;
+                    this.imgNull = 'https://static.productionready.io/images/smiley-cyrus.jpg';
+                    this.namePopularTag = '';
+                    //pages
+                    this.pager = {};
+                    this.isLogin = localStorage.getItem('token') ? true : false;
+                }
+                HomePageComponent.prototype.ngOnInit = function () {
+                    var _this = this;
+                    this.setPage(1);
+                    this.articleService.getTabs().subscribe(function (data) {
+                        _this.listTabs = data['tags'];
+                    });
+                };
+                HomePageComponent.prototype.clickYourFeed = function () {
+                    this.tab = 1;
+                    this.toggleTab = false;
+                    this.setPage(1);
+                };
+                HomePageComponent.prototype.clickGlobalFeed = function () {
+                    this.tab = 2;
+                    this.toggleTab = false;
+                    this.setPage(1);
+                };
+                HomePageComponent.prototype.clickPopularTags = function (nameTab) {
+                    this.namePopularTag = nameTab;
+                    this.tab = 3;
+                    this.toggleTab = true;
+                    this.setPage(1);
+                };
+                HomePageComponent.prototype.setPage = function (page) {
+                    var _this = this;
+                    this.loadingArticle = true;
+                    this.listArticle = [];
+                    var offSetPage = (page - 1) * 10;
+                    if (page < 1 || page > this.pager.totalPages) {
+                        offSetPage = 0;
+                    }
+                    switch (this.tab) {
+                        case 1:
+                            this.articleService.getYourArticle(offSetPage).subscribe(function (data) {
+                                _this.listArticle = data['articles'];
+                                _this.loadingArticle = false;
+                                _this.total = data['articlesCount'];
+                                _this.pager = _this.appService.getPager(_this.total, page, 10);
+                            });
+                            break;
+                        case 2:
+                            this.articleService.getGlobalArticle(this.isLogin, offSetPage).subscribe(function (data) {
+                                _this.listArticle = data['articles'];
+                                _this.loadingArticle = false;
+                                _this.total = data['articlesCount'];
+                                _this.pager = _this.appService.getPager(_this.total, page, 10);
+                            });
+                            break;
+                        case 3:
+                            this.articleService.getTabArticle(this.namePopularTag, this.isLogin, offSetPage).subscribe(function (data) {
+                                _this.listArticle = data['articles'];
+                                _this.loadingArticle = false;
+                                _this.total = data['articlesCount'];
+                                _this.pager = _this.appService.getPager(_this.total, page, 10);
+                            });
+                            break;
+                    }
+                };
+                return HomePageComponent;
+            }());
+            HomePageComponent.ctorParameters = function () { return [
+                { type: _articleModule_article_service__WEBPACK_IMPORTED_MODULE_2__["ArticleService"] },
+                { type: _app_service__WEBPACK_IMPORTED_MODULE_5__["AppService"] },
+                { type: _authModule_auth_service__WEBPACK_IMPORTED_MODULE_3__["AuthService"] },
+                { type: _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"] }
+            ]; };
+            HomePageComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+                Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+                    selector: 'app-home-page',
+                    template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! raw-loader!./home-page.component.html */ "./node_modules/raw-loader/dist/cjs.js!./src/app/homePage/home-page.component.html")).default,
+                    styles: [tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! ./home-page.component.css */ "./src/app/homePage/home-page.component.css")).default]
+                })
+            ], HomePageComponent);
+            /***/ 
+        }),
+        /***/ "./src/app/shared/shared.module.ts": 
+        /*!*****************************************!*\
+          !*** ./src/app/shared/shared.module.ts ***!
+          \*****************************************/
+        /*! exports provided: SharedModule */
+        /***/ (function (module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            __webpack_require__.r(__webpack_exports__);
+            /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SharedModule", function () { return SharedModule; });
+            /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+            /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+            /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm2015/common.js");
+            /* harmony import */ var _app_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../app.service */ "./src/app/app.service.ts");
+            /* harmony import */ var _authModule_auth_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../authModule/auth.service */ "./src/app/authModule/auth.service.ts");
+            /* harmony import */ var _component_listArticle_list_article_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../component/listArticle/list-article.component */ "./src/app/component/listArticle/list-article.component.ts");
+            /* harmony import */ var _component_pagination_pagination_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../component/pagination/pagination.component */ "./src/app/component/pagination/pagination.component.ts");
+            /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
+            /* harmony import */ var _component_button_following_button_following_button_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../component/button/following-button/following-button.component */ "./src/app/component/button/following-button/following-button.component.ts");
+            /* harmony import */ var _component_button_favorite_button_favorite_button_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../component/button/favorite-button/favorite-button.component */ "./src/app/component/button/favorite-button/favorite-button.component.ts");
+            var SharedModule_1;
+            var SharedModule = SharedModule_1 = /** @class */ (function () {
+                function SharedModule() {
+                }
+                SharedModule.forRoot = function () {
+                    return {
+                        ngModule: SharedModule_1,
+                        providers: [_authModule_auth_service__WEBPACK_IMPORTED_MODULE_4__["AuthService"], _app_service__WEBPACK_IMPORTED_MODULE_3__["AppService"]]
+                    };
+                };
+                return SharedModule;
+            }());
+            SharedModule = SharedModule_1 = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+                Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
+                    declarations: [
+                        _component_listArticle_list_article_component__WEBPACK_IMPORTED_MODULE_5__["ListArticleComponent"],
+                        _component_pagination_pagination_component__WEBPACK_IMPORTED_MODULE_6__["PaginationComponent"],
+                        _component_button_following_button_following_button_component__WEBPACK_IMPORTED_MODULE_8__["FollowingButtonComponent"],
+                        _component_button_favorite_button_favorite_button_component__WEBPACK_IMPORTED_MODULE_9__["FavoriteButtonComponent"],
+                    ],
+                    imports: [
+                        _angular_common__WEBPACK_IMPORTED_MODULE_2__["CommonModule"],
+                        _angular_router__WEBPACK_IMPORTED_MODULE_7__["RouterModule"],
+                    ],
+                    exports: [
+                        _component_listArticle_list_article_component__WEBPACK_IMPORTED_MODULE_5__["ListArticleComponent"],
+                        _component_pagination_pagination_component__WEBPACK_IMPORTED_MODULE_6__["PaginationComponent"],
+                        _component_button_following_button_following_button_component__WEBPACK_IMPORTED_MODULE_8__["FollowingButtonComponent"],
+                        _component_button_favorite_button_favorite_button_component__WEBPACK_IMPORTED_MODULE_9__["FavoriteButtonComponent"],
+                    ]
+                })
+            ], SharedModule);
             /***/ 
         }),
         /***/ "./src/environments/environment.ts": 
@@ -2016,7 +1653,7 @@
           \***************************/
         /*! no static exports found */
         /***/ (function (module, exports, __webpack_require__) {
-            module.exports = __webpack_require__(/*! D:\Angularjs\Mock Project\projectApp\src\main.ts */ "./src/main.ts");
+            module.exports = __webpack_require__(/*! D:\Mock_project\projectApp\src\main.ts */ "./src/main.ts");
             /***/ 
         })
     }, [[0, "runtime", "vendor"]]]);
