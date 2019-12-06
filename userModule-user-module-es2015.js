@@ -180,6 +180,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
 /* harmony import */ var _user_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../user.service */ "./src/app/userModule/user.service.ts");
 /* harmony import */ var src_app_app_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/app.service */ "./src/app/app.service.ts");
+/* harmony import */ var src_app_authModule_auth_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/authModule/auth.service */ "./src/app/authModule/auth.service.ts");
+
 
 
 
@@ -187,11 +189,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let SettingPageComponent = class SettingPageComponent {
-    constructor(userService, router, appService, fb) {
+    constructor(userService, router, appService, fb, authService) {
         this.userService = userService;
         this.router = router;
         this.appService = appService;
         this.fb = fb;
+        this.authService = authService;
         this.urlNull = 'https://static.productionready.io/images/smiley-cyrus.jpg';
         this.errSetting = [];
         this.formSetting = this.fb.group({
@@ -229,10 +232,13 @@ let SettingPageComponent = class SettingPageComponent {
         }
         if (this.urlImage) {
             this.dataSetting['image'] = this.urlImage;
-            localStorage.setItem('image', this.urlImage);
         }
         this.userService.updateSetting(this.dataSetting).subscribe(data => {
-            this.router.navigate(['/profile/', localStorage.getItem('name')]);
+            console.log(data['user']);
+            this.authService.subject.next({ isLogin: true, username: data['user'].username, urlImage: data['user'].image });
+            localStorage.setItem('image', data['user'].image);
+            localStorage.setItem('name', data['user'].username);
+            this.router.navigate(['/profile/', data['user'].username]);
         }, err => {
             this.errSetting = this.appService.getError(err);
         });
@@ -242,7 +248,8 @@ SettingPageComponent.ctorParameters = () => [
     { type: _user_service__WEBPACK_IMPORTED_MODULE_4__["UserService"] },
     { type: _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"] },
     { type: src_app_app_service__WEBPACK_IMPORTED_MODULE_5__["AppService"] },
-    { type: _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormBuilder"] }
+    { type: _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormBuilder"] },
+    { type: src_app_authModule_auth_service__WEBPACK_IMPORTED_MODULE_6__["AuthService"] }
 ];
 SettingPageComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
