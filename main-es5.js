@@ -1653,7 +1653,7 @@
           \***************************/
         /*! no static exports found */
         /***/ (function (module, exports, __webpack_require__) {
-            module.exports = __webpack_require__(/*! D:\Mock_project\projectApp\src\main.ts */ "./src/main.ts");
+            module.exports = __webpack_require__(/*! D:\Mock_project\EditorAngular\src\main.ts */ "./src/main.ts");
             /***/ 
         })
     }, [[0, "runtime", "vendor"]]]);
